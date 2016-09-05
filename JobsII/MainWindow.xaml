@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JobsII"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="734.309" Width="1386.168">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="221*"/>
+            <RowDefinition Height="482*"/>
+        </Grid.RowDefinitions>
+        <StackPanel/>
+
     </Grid>
 </Window>
