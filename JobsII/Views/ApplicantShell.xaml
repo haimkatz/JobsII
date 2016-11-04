@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="JobsII.Views.ApplicantShell"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                 xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:Models="clr-namespace:JobsII.Models" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+    xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
+             xmlns:local="clr-namespace:JobsII.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.DataContext>
+        <Binding Mode="OneWay" Path="ApplicantShellViewModel" Source="{StaticResource Locator}"/>
+    </UserControl.DataContext>
+    <Grid FlowDirection="RightToLeft" Margin="0,20,10,0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        <DataGrid x:Name="personDataGrid" FlowDirection="LeftToRight" Grid.ColumnSpan="1"
+                  RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="0" Grid.Column="0" 
+                  ItemsSource="{Binding Applicants}"
+                  SelectedItem="{Binding selectedApplicant, Mode=TwoWay}"
+                  EnableRowVirtualization="True" 
+                  AutoGenerateColumns="False"  HorizontalAlignment="Left" d:IsHidden="True" >
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged" SourceObject="{Binding Mode=OneWay}">
+                    <Custom:EventToCommand/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="countryColumn" Width="SizeToHeader" Header="country" Binding="{Binding country}"/>
+                <DataGridTextColumn x:Name="firstnameColumn" Width="SizeToHeader" Header="firstname" Binding="{Binding firstname}"/>
+                <DataGridTextColumn x:Name="institutionColumn" Width="SizeToHeader" Header="institution" Binding="{Binding institution}"/>
+                <DataGridTextColumn x:Name="lastnameColumn" Width="SizeToHeader" Header="lastname" Binding="{Binding lastname}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+        <TabControl Margin="0,2,5,0"  Grid.Column="1" FlowDirection="RightToLeft">
+           <TabItem x:Name="addapp" Content="{Binding addapplicantviewmodel}"  Header="Add/Delete"/>
+            <TabItem x:Name="reviewer" Content="{Binding reviewertviewmodel}" Header="Reviewers"/>
+            <TabItem x:Name="documents" Content="{Binding documentviewmodel}" Header="Documents"/>
+            
+        </TabControl>
+
+        <!--<ContentControl Grid.Column="1" Content="{Binding selectedVM}"></ContentControl>-->
+    </Grid>
+</UserControl>

@@ -1,17 +1,53 @@
-﻿<Window x:Class="JobsII.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JobsII"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="734.309" Width="1386.168">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="221*"/>
-            <RowDefinition Height="482*"/>
-        </Grid.RowDefinitions>
-        <StackPanel/>
+        xmlns:Views="clr-namespace:JobsII.Views"
+        xmlns:vm="clr-namespace:JobsII.ViewModel"
+        x:Class="JobsII.MainWindow"
+  mc:Ignorable="d"
+    FlowDirection="RightToLeft"
+       DataContext="{Binding Main, Source={StaticResource Locator}}">
+        <!--Title="MainWindow" Height="734.309" Width="1386.168" DataContext="{Binding pagePersonView, RelativeSource={RelativeSource Self}}"-->
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:PersonViewModel}">
+            <Views:PersonView/>
+            
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DepartmentViewModel}">
+            <Views:DepartmentView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:RequirementViewModel}">
+            <vm:RequirementtypeView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:jobViewModel}">
+            <Views:JobParentView/>
+        </DataTemplate>
+    </Window.Resources>
 
-    </Grid>
+
+    <DockPanel FlowDirection="RightToLeft" LastChildFill="True">
+
+        <StackPanel DockPanel.Dock="Top" >
+            <ListView ItemsSource="{Binding MenuMessages}" FlowDirection="RightToLeft" SelectedItem="{Binding selectedmenuitem}" >
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate> <StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                       
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate  DataType="{x:Type MenuItem}" >
+                        <TextBlock Text="{Binding menutext}"/>
+                    </DataTemplate>
+
+                </ListView.ItemTemplate>
+            </ListView>
+         </StackPanel>  
+        
+            <ContentControl  Content="{Binding selectedVM}" ></ContentControl>
+       
+      
+
+    </DockPanel>
 </Window>

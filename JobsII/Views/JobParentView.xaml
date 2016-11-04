@@ -1,0 +1,242 @@
+﻿<UserControl
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:Models="clr-namespace:JobsII.Models"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:viewModel="clr-namespace:JobsII.ViewModel"
+        xmlns:views="clr-namespace:JobsII.Views"
+        x:Class="JobsII.Views.JobParentView"
+        mc:Ignorable="d ignore"
+        >
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="jobViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Job}, CreateList=True}"/>
+        <DataTemplate DataType="{x:Type viewModel:ApplicantShellViewModel}">
+            <views:ApplicantShell/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:ReviewerViewModel}">
+            <views:ReviewerView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:DocumentViewModel}">
+            <views:DocumentView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:AddApplicantViewModel}">
+            <views:AddApplicantView/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Path="jobViewModel" Source="{StaticResource Locator}"/>
+    </UserControl.DataContext>
+   
+      
+     
+            <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1200"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel    Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="112,-5,-112,5">
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23"
+                     Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding searchtext, UpdateSourceTrigger= PropertyChanged}" 
+                     
+                     VerticalAlignment="Top" Width="107">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <command:EventToCommand Command="{Binding searchtext}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+
+            <Button Margin ="5" Content="New" Command="{Binding NewJob}" />
+            <Button x:Name="Savebtn" Margin ="5" Content="Save" Command="{Binding SaveJob}" />
+            <Button Margin="5" Content="Exit"/>
+
+        </StackPanel>
+        <DockPanel FlowDirection="RightToLeft" LastChildFill="True" Grid.Row="1" Margin="10,0,10,0">
+        <DataGrid x:Name="jobDataGrid" FlowDirection="RightToLeft" DockPanel.Dock="Left"
+                  AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding jobsc}" Grid.Row="1" 
+                  SelectedItem="{Binding selectedJob, Mode=TwoWay}"  RowDetailsVisibilityMode="VisibleWhenSelected" CanUserAddRows="False"
+           >
+            
+            <DataGrid.Columns>
+                    <DataGridTemplateColumn x:Name="deptidColumn" Width="SizeToHeader" Header="Dept">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox
+                                
+                                  ItemsSource="{Binding jobViewModel.departments, Source={StaticResource Locator}}" 
+                                
+                                DisplayMemberPath="shortname"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding Deptid}"
+                            FlowDirection="RightToLeft"
+                                >
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="idColumn" Binding="{Binding id}" Header="id" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="jobshortnameColumn" Binding="{Binding jobshortname}" Header="jobshortname" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="mercavaidColumn" Binding="{Binding mercavaid}" Header="mercavaid" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="tenderendColumn" Header="tenderend" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding tenderend, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="tenderstartColumn" Header="tenderstart" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding tenderstart, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+            <Grid x:Name="jrframe" DockPanel.Dock="Right">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Row="0">
+                    <Button x:Name="jrbutton" Content="הוסף" Command="{Binding Newjr}"/>
+                </StackPanel>
+        <DataGrid x:Name="jobRequirementsDataGrid"  FlowDirection="LeftToRight" Grid.Row="1" CanUserAddRows="False"
+                  AutoGenerateColumns="False" EnableRowVirtualization="True" 
+                  ItemsSource="{Binding selectedJob.jobRequirements, Mode=TwoWay}"   RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                        <DataGridTextColumn x:Name="commentColumn" Binding="{Binding comment}" Header="comment" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="deadlineColumn" Header="deadline" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                                    <DatePicker  SelectedDate="{Binding deadline, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                        <DataGridTextColumn x:Name="idColumn1" Binding="{Binding id}" Header="id" Width="SizeToHeader"/>
+                        <DataGridTextColumn x:Name="JobidColumn" Binding="{Binding Jobid}"  />
+                <!--<DataGridTemplateColumn x:Name="jobidColumn" Header="Jobid" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox>
+                                <ComboBoxItem Content="{Binding Jobid}"/>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+                        <DataGridTemplateColumn x:Name="Requirementid" Header= "דרישה">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox
+                                
+                                  ItemsSource="{Binding jobViewModel.requirements, Source={StaticResource Locator}}" 
+                                
+                                DisplayMemberPath="RequirementName"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding Requirementid, Mode=TwoWay}"
+                            FlowDirection="RightToLeft" 
+                                >
+
+
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+               </DataGrid.Columns>
+        </DataGrid>
+            </Grid>
+            <StackPanel FlowDirection="RightToLeft">
+                <Grid x:Name="grid1" DataContext="{Binding selectedJob, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="committeeformed:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="committeeformedDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="0" SelectedDate="{Binding committeeformed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="coordinatorid:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="coordinatoridComboBox" Grid.Column="1" DisplayMemberPath="lastname" SelectedValuePath="id" HorizontalAlignment="Left" Height="Auto"
+                              ItemsSource="{Binding jobViewModel.Persons,  Source={StaticResource Locator}}" SelectedValue="{Binding coordinatorid, Mode=TwoWay}"
+                              Margin="3" Grid.Row="1" VerticalAlignment="Center" Width="120">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <Label Content="Decision Made:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="decisionMadeDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="2" SelectedDate="{Binding DecisionMade, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="Deptid:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="deptidComboBox" Grid.Column="1"  HorizontalAlignment="Left" Height="Auto"
+                               DisplayMemberPath="shortname"  SelectedValuePath="id"
+                              ItemsSource="{Binding jobViewModel.departments, Source={StaticResource Locator}}"  SelectedValue="{Binding Deptid, Mode=TwoWay}"
+                              Margin="3" Grid.Row="3" VerticalAlignment="Center" Width="120">
+                        <ComboBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ComboBox.ItemsPanel>
+                    </ComboBox>
+                    <Label Content="expenseforms:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="expenseformsDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="4" SelectedDate="{Binding expenseforms, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="fileprepared:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="filepreparedDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="5" SelectedDate="{Binding fileprepared, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
+                    <TextBox x:Name="idTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="6" Text="{Binding id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                    <Label Content="jobfullname:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center"/>
+                    <TextBox x:Name="jobfullnameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="7" Text="{Binding jobfullname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                    <Label Content="jobshortname:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="jobshortnameTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding jobshortname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                    <Label Content="materialsent 1:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="materialsent1DatePicker" Grid.Column="3" HorizontalAlignment="Left" Margin="3" Grid.Row="1" SelectedDate="{Binding materialsent1, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="materialsent 2:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="materialsent2DatePicker" Grid.Column="3" HorizontalAlignment="Left" Margin="3" Grid.Row="2" SelectedDate="{Binding materialsent2, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="meetingdate 1:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="meetingdate1DatePicker" Grid.Column="3" HorizontalAlignment="Left" Margin="3" Grid.Row="3" SelectedDate="{Binding meetingdate1, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="meetingdate 2:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="meetingdate2DatePicker" Grid.Column="3" HorizontalAlignment="Left" Margin="3" Grid.Row="4" SelectedDate="{Binding meetingdate2, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="mercavaid:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
+                    <TextBox x:Name="mercavaidTextBox" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="5" Text="{Binding mercavaid, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                    <Label Content="roomordered:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="roomorderedDatePicker" Grid.Column="3" HorizontalAlignment="Left" Margin="3" Grid.Row="6" SelectedDate="{Binding roomordered, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="tenderend:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="tenderendDatePicker" Grid.Column="3" HorizontalAlignment="Left" Margin="3" Grid.Row="7" SelectedDate="{Binding tenderend, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                    <Label Content="tenderstart:" Grid.Column="2" HorizontalAlignment="Left" Margin="3" Grid.Row="8" VerticalAlignment="Center"/>
+                    <DatePicker x:Name="tenderstartDatePicker" Grid.Column="3" HorizontalAlignment="Left" Margin="3" Grid.Row="8" SelectedDate="{Binding tenderstart, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+                </Grid>
+            </StackPanel>
+
+
+        </DockPanel>
+        <ContentControl Grid.Row="2" Content="{Binding applicantshellviewmodel}"/>
+    </Grid>
+</UserControl>

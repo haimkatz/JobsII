@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="JobsII.ViewModel.RequirementtypeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        mc:Ignorable="d ignore"
+     xmlns:Models="clr-namespace:JobsII.Models" 
+     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
+    xmlns:Custom="http://www.galasoft.ch/mvvmlight"
+    xmlns:viewModel="clr-namespace:JobsII.ViewModel" Loaded="UserControl_Loaded" >
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="requirementViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Requirement}, CreateList=True}"/>
+    </UserControl.Resources>
+
+    <!-- <UserControl.Resources>
+       <CollectionViewSource x:Key="personViewSource" 
+                              -->
+    <!--d:DesignSource="{d:DesignInstance {x:Type viewModel:TableTemplateViewModel}, CreateList=True}"/>-->
+    <!--
+
+    </UserControl.Resources>-->
+
+    <UserControl.DataContext>
+        <Binding Mode="OneWay" Path="RequirementViewModel" Source="{StaticResource Locator}"/>
+    </UserControl.DataContext>
+
+    <Grid x:Name="mainGrid" FlowDirection="RightToLeft" Width="704">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="800"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="704"/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel    Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="112,-5,-112,5">
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23"
+                     Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding searchtext, UpdateSourceTrigger= PropertyChanged}" 
+                     
+                     VerticalAlignment="Top" Width="107">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <Custom:EventToCommand Command="{Binding  }" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+
+            <Button Margin ="5" Content="New" Command="{Binding NewObject}" />
+            <Button x:Name="Savebtn" Margin ="5" Content="Save" Command="{Binding SaveObject}" />
+            <Button Margin="5" Content="Exit"/>
+
+        </StackPanel>
+        <DataGrid x:Name="requirementDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="False"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                  ItemsSource="{Binding requirements}" 
+                  RowDetailsVisibilityMode="VisibleWhenSelected" Margin="0,0,2,0"
+                  SelectedItem="{Binding selectedrequirement, Mode=TwoWay}"
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn x:Name="idColumn" Header="id" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding id}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="requirementDescriptionColumn" Binding="{Binding RequirementDescription}" Header="Requirement Description" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="requirementNameColumn" Binding="{Binding RequirementName}" Header="Requirement Name" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+    </Grid>
+</UserControl>

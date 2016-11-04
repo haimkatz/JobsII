@@ -1,0 +1,80 @@
+﻿<UserControl
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:Models="clr-namespace:JobsII.Models" x:Class="JobsII.Views.DepartmentView"
+        mc:Ignorable="d ignore"
+        Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="departmentViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Department}, CreateList=True}"/>
+        <CollectionViewSource x:Key="personViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Person}, CreateList=True}"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Path="DepartmentViewModel" Source="{StaticResource Locator}"/>
+    </UserControl.DataContext>
+
+    <Grid x:Name="mainGrid" FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="500"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="800"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel    Grid.Row="0" Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="112,-5,0,5">
+           
+
+            <Button Margin ="5" Content="New" Command="{Binding newdepartment}" />
+            <Button x:Name="Savebtn" Margin ="5" Content="Save" Command="{Binding SaveDepartments}" />
+            <Button Margin="5" Content="Exit"/>
+
+        </StackPanel>
+        <DataGrid x:Name="departmentDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding departments}"
+                  Grid.Row="1" Grid.Column="0"
+                  SelectedItem="{Binding selectedDepartment ,Mode=TwoWay}"
+                  RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn x:Name="assdepartmentheadidColumn" Header="assdepartmentheadid" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox  ItemsSource="{Binding DepartmentViewModel.persons, Source={StaticResource Locator}}" 
+                                DisplayMemberPath="lastname"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding assdepartmentheadid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="departmentheadidColumn" Header="departmentheadid" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox
+
+                                ItemsSource="{Binding DepartmentViewModel.persons, Source={StaticResource Locator}}" 
+                                DisplayMemberPath="lastname"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding departmentheadid, Mode=TwoWay}"
+                            FlowDirection="RightToLeft"
+                           />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="fullnameColumn" Binding="{Binding fullname}" Header="fullname" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="idColumn" Header="id" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding id}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="shortnameColumn" Binding="{Binding shortname}" Header="shortname" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>
