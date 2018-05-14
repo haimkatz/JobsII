@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="JobsII.Views.RemindersView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:repository="clr-namespace:JobsII.Repository"
+        mc:Ignorable="d ignore"
+        DataContext="{Binding ReminderViewModel, Source={StaticResource Locator}}" >
+    <UserControl.Resources>
+        <repository:BooleanToVisibilityConverter x:Key="_Converter"/>
+    </UserControl.Resources>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" FlowDirection="RightToLeft">
+            <Button x:Name="remtypebtn" Content="{Binding buttontext}" Command="{Binding AppRem}"/>
+        </StackPanel>
+        <DataGrid x:Name="revdatagrid" Grid.Row="1" FlowDirection="RightToLeft" AutoGenerateColumns="True" 
+              ItemsSource="{Binding reviewerreminders}" Visibility="{Binding appcollapsed, Converter={StaticResource _Converter}, ConverterParameter = true}" />
+        <DataGrid x:Name="appdatagrid" Grid.Row="1" FlowDirection="RightToLeft" AutoGenerateColumns="True" 
+              ItemsSource="{Binding applicantreminders}" Visibility="{Binding appcollapsed, Converter={StaticResource _Converter}, ConverterParameter= false}" />
+    </Grid>
+ 
+</UserControl>

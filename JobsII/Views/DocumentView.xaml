@@ -1,17 +1,160 @@
-﻿<UserControl x:Class="JobsII.Views.DocumentView"
+﻿<UserControl
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:Models="clr-namespace:JobsII.Models"
+        xmlns:local="clr-namespace:JobsII.Repository"
+        xmlns:vm="clr-namespace:JobsII.ViewModel"
+        xmlns:views="clr-namespace:JobsII.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:Custom="http://www.galasoft.ch/mvvmlight"   
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+        x:Class="JobsII.Views.DocumentView"
         mc:Ignorable="d ignore"
-        DataContext="{Binding DocumentViewModel, Source={StaticResource Locator}}">
-    <Grid>
+        Loaded="UserControl_Loaded"
+    Background="{DynamicResource backgroundbrush}"
+    Unloaded="UserControl_Unloaded">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="appRequirementViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:AppRequirement}, CreateList=True}"/>
+        <DataTemplate DataType="{x:Type vm:DocumentViewModel}">
+            <views:DocumentView/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <!--<UserControl.DataContext>
+        -->
+    <!--<Binding Mode="OneWay" Path="DocumentViewModel" Source="{StaticResource Locator}"/>-->
+    <!--
+        <Binding Path="DataContext.selectedVM RelativeSource={RelativeSource AncestorType= UserControl, AncestorLevel=2  },Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+    </UserControl.DataContext>-->
+    <Grid FlowDirection="RightToLeft">
         <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
-    <StackPanel>
-        <TextBlock Text="My Document View"/>
-    </StackPanel>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+         
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0"  Orientation="Horizontal">
+            <Button x:Name="NewDoc" Content="חדש" Command="{Binding NewDoccom}" Margin="10,5,10,5"/>
+            <Button x:Name="OpenDoc" Content="הצג" Command="{Binding ViewDoccom}" Margin="10,5,10,5"/>
+            <Button x:Name="EditDoc" Content="החלף" Command="{Binding EditDoccom}" Margin="10,5,10,5"/>
+            <Button x:Name="DelDoc" Content="מחק" Command="{Binding DelDoccom}" Margin="10,5,10,5"/>
+            <Button x:Name="SaveDoc" Content="שמור" Command="{Binding SaveDoccom}" Margin="10,5,10,5"/>
+            <Button x:Name="BrowseDoc" Content="עיין" Command="{Binding Browsecom}" Margin="10,5,10,5"/>
+        </StackPanel>
+        <DataGrid x:Name="appRequirementDataGrid" Grid.Row="1" 
+                  AutoGenerateColumns="False" EnableRowVirtualization="True" 
+                  ItemsSource="{Binding apprequirements, Mode=TwoWay}" 
+                  SelectedItem="{Binding selectedappreq}"
+                  FlowDirection="RightToLeft"  RowDetailsVisibilityMode="VisibleWhenSelected" 
+                  CanUserAddRows="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="applicantidColumn" Binding="{Binding Applicantid}" Header="#מועמד" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="commentsColumn" Binding="{Binding comments}" Header="הערות" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="datereceivedColumn" Header="התקבל" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding datereceived, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="idColumn" Binding="{Binding id}" Header="#" Width="SizeToHeader"/>
+                <!--<DataGridTemplateColumn x:Name="Requirementid" Header= "דרישה">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox
+                                
+                                  ItemsSource="{Binding Path=DataContext.apprequirements, RelativeSource={RelativeSource AncestorType= UserControl},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                DisplayMemberPath="RequirementName"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding jobRequirementid, Mode=TwoWay}"
+                                
+                            FlowDirection="RightToLeft" 
+                                >
+
+u
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid x:Name="grid1" DataContext="{Binding selectedappreq}" Grid.Row="2" Grid.Column="0" FlowDirection="RightToLeft">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <local:DebugDataBindingConverter x:Key="DebugBinding"/>
+            </Grid.Resources>
+
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Row="0">
+                <Label Content="{Binding Applicantid}" Grid.Column="0" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Center"/>
+                <Label x:Name="idTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3"  Content="{Binding id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            </StackPanel>
+            <!--<TextBox x:Name="applicantidTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding Applicantid, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>-->
+               <Label Content="תאריך קבלה" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+            <DatePicker x:Name="datereceivedDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="1" SelectedDate="{Binding datereceived, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+            <Label Content= "מסמך סוג" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+            <!--                ItemsSource ="{Binding DataContext.selectedJob.jobRequirements, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}},Mode=TwoWay}"
+         SelectedItem="{Binding selectedappreq}"   Converter={StaticResource DebugBinding},  diag:PresentationTraceSources.TraceLevel=High}" 
+            "{Binding DataContext.jobrequirements, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource DebugBinding}}" -->
+            <ComboBox x:Name="jobRequirementidComboBox" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="Auto"
+                        ItemsSource ="{Binding DataContext.selectedApplicant.job.jobRequirements, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    DisplayMemberPath="requirement.RequirementName"  SelectedValuePath="id"        
+                        SelectedValue="{Binding jobRequirementid}"       
+                              Margin="3"  VerticalAlignment="Center" Width="120">
+               
+            </ComboBox>
+           
+            
+          <!--ItemsSource="{Binding Path=DataContext.selectedJob.jobRequirements, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:JobParentView}}, UpdateSourceTrigger=PropertyChanged}"-->
+            <Label Content="Filepath" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="filepathtextbox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" Text="{Binding localpath, Mode=TwoWay, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=true}" 
+                     VerticalAlignment="Center" Width="120" AllowDrop="True" >
+                <i:Interaction.Triggers>
+                    <!--<i:EventTrigger EventName="PreviewDragEnter" >
+                        <Custom:EventToCommand Command="{Binding Mode=OneWay, Path= DragFile}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>-->
+                    <i:EventTrigger EventName="Drop">
+                        <Custom:EventToCommand Command="{Binding DataContext.DragFile, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewDragOver">
+                        <Custom:EventToCommand Command="{Binding DataContext.PreviewDragEnterCommand, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewDragEnter">
+                        <Custom:EventToCommand Command="{Binding DataContext.PreviewDragEnterCommand, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+
+                </i:Interaction.Triggers>
+            </TextBox>
+            
+            <Label Content="הערות:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+            <TextBox x:Name="commentsTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="4" Text="{Binding comments, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <!--<Label Grid.Row="4" Grid.Column="1" Content="{Binding Path=DataContext.selectedJob.jobfullname, 
+                RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type views:JobParentView}}}"/>-->
+            <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+            <TextBlock x:Name="test" Text="{Binding applicant.id}" FontStyle="Italic" Foreground="Red" />
+            <TextBlock x:Name="test2" Text="{Binding applicant.job.jobshortname}" FontStyle="Italic" Foreground="Black" />
+            <TextBlock x:Name="test3" Text="{Binding DataContext.currentJobid, RelativeSource={RelativeSource AncestorType=UserControl}}" FontStyle="Italic" Foreground="Blue"/>
+          </StackPanel>  
+        </Grid>
+
     </Grid>
+
+
 </UserControl>

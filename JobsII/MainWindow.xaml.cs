@@ -22,11 +22,19 @@ namespace JobsII
     public partial class MainWindow : Window
     {
       //  public PersonView pagePersonView { get; set; }
-
+        private NewPersonView _myview;
         public MainWindow()
         {
             InitializeComponent();
-      //      pagePersonView = new PersonView();
+            //      pagePersonView = new PersonView();
+             _myview = new NewPersonView();
+            Closing += closeform;
+
+        }
+
+        private void closeform(object sender, EventArgs e)
+        {
+            _myview.Close();
         }
     }
 }

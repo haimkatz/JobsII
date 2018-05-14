@@ -12,10 +12,12 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using CommonServiceLocator;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Views;
 using JobsII.ViewModel;
-using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator;
 using JobsII.Models;
 using JobsII.Repository;
 
@@ -52,13 +54,43 @@ namespace JobsII.ViewModel
             SimpleIoc.Default.Register<DepartmentViewModel>();
             SimpleIoc.Default.Register<TableTemplateViewModel>();
             SimpleIoc.Default.Register<RequirementViewModel>();
-            SimpleIoc.Default.Register<jobViewModel>();
+           
             SimpleIoc.Default.Register<ApplicantShellViewModel>();
             SimpleIoc.Default.Register<AddApplicantViewModel>();
             SimpleIoc.Default.Register<ReviewerViewModel>();
             SimpleIoc.Default.Register<DocumentViewModel>();
+            SimpleIoc.Default.Register<AddReviewerViewModel>();
+            SimpleIoc.Default.Register<ReviwerStatusViewModel>();
+            SimpleIoc.Default.Register<CommitteeViewModel>();
+            SimpleIoc.Default.Register<InstituteViewModel>();
+            SimpleIoc.Default.Register<UniversalDocViewModel>();
+            SimpleIoc.Default.Register<JobDocViewModel>();
+            SimpleIoc.Default.Register<jobViewModel>();
+            SimpleIoc.Default.Register<ReminderViewModel>();
+            SimpleIoc.Default.Register <LanguageViewModel>();
+            SimpleIoc.Default.Register<MergeDocViewModel>();
+            SimpleIoc.Default.Register<MergeDocTypeViewModel>();
+        } 
+        /// <summary>
+        /// Gets the view's ViewModel.
+        /// </summary>
+        public JobDocViewModel jobdocviewmodel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<JobDocViewModel>();
+            }
+        }
+        public UniversalDocViewModel UniversalDocViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<UniversalDocViewModel>();
+            }
         }
 
+        
+        
         public MainViewModel Main
         {
             get
@@ -84,7 +116,7 @@ namespace JobsII.ViewModel
 
             }
         }
-        public TableTemplateViewModel TableTemplateViewModel
+       public TableTemplateViewModel TableTemplateViewModel
         {
             get
             {
@@ -132,6 +164,11 @@ namespace JobsII.ViewModel
 
             }
         }
+
+        public AddReviewerViewModel AddReviewerViewModel
+        {
+            get { return ServiceLocator.Current.GetInstance<AddReviewerViewModel>(); }
+        }
         public DocumentViewModel DocumentViewModel
         {
             get
@@ -140,9 +177,82 @@ namespace JobsII.ViewModel
 
             }
         }
+        public ReviwerStatusViewModel ReviwerStatusViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ReviwerStatusViewModel>();
+
+            }
+        }
+        public CommitteeViewModel CommitteeViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<CommitteeViewModel>();
+
+            }
+        }
+         public InstituteViewModel InstituteViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<InstituteViewModel>();
+
+            }
+        }
+        public ReminderViewModel ReminderViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ReminderViewModel>();
+
+            }
+        }
+        public LanguageViewModel LanguageViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<LanguageViewModel>();
+
+            }
+        }
+        public MergeDocViewModel MergeDocViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MergeDocViewModel>();
+
+            }
+        }
+        public MergeDocTypeViewModel MergeDocTypeViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MergeDocTypeViewModel>();
+
+            }
+        }
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            SimpleIoc.Default.Unregister<UniversalDocViewModel>();
+            SimpleIoc.Default.Unregister<InstituteViewModel>();
+            SimpleIoc.Default.Unregister<DepartmentViewModel>();
+            SimpleIoc.Default.Unregister<RequirementViewModel>();
+            SimpleIoc.Default.Unregister<ReviwerStatusViewModel>();
+            SimpleIoc.Default.Unregister<CommitteeViewModel>();
+            SimpleIoc.Default.Unregister<DocumentViewModel>();
+            SimpleIoc.Default.Unregister<ReviewerViewModel>();
+            SimpleIoc.Default.Unregister<AddApplicantViewModel>();
+            SimpleIoc.Default.Unregister<ApplicantShellViewModel>();
+            SimpleIoc.Default.Unregister<JobDocViewModel>();
+            SimpleIoc.Default.Unregister<jobViewModel>();
+            SimpleIoc.Default.Unregister<PersonViewModel>();
+            SimpleIoc.Default.Unregister<ReminderViewModel>();
+            SimpleIoc.Default.Unregister<LanguageViewModel>();
+            SimpleIoc.Default.Unregister<MergeDocTypeViewModel>();
+            SimpleIoc.Default.Unregister<MergeDocViewModel>();
+
         }
     }
 }

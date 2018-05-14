@@ -8,6 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using JobsII.Views;
 
 
 namespace JobsII
@@ -21,7 +22,8 @@ namespace JobsII
         static App()
         {
             DispatcherHelper.Initialize();
-            Database.SetInitializer(new mySeed());
+            //Database.SetInitializer(new mySeed());
+          
         }
     }
 }

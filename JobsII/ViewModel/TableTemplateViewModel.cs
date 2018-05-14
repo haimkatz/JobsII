@@ -49,7 +49,11 @@ namespace JobsII.ViewModel
                 _persons = value;
                 if (person == null)
                 {
-                    person = _persons[0];
+                    if (_persons.Count>0)
+                    {
+                         person = _persons[0];
+                    }
+                   
                 }
                 RaisePropertyChanged(PersonsPropertyName);
             }
@@ -158,42 +162,42 @@ namespace JobsII.ViewModel
         /// </summary>
       
 
-        private async void deletaneObject(object obj)
-        {
-            try
-            {
-               // await _ds.DeleteObj(obj);
-                // return "OK";
-            }
+        //private async void deletaneObject(object obj)
+        //{
+        //    try
+        //    {
+        //       // await _ds.DeleteObj(obj);
+        //        // return "OK";
+        //    }
 
-            catch (Exception e)
-            {
-                // return e.Message;
-            }
+        //    catch (Exception e)
+        //    {
+        //        // return e.Message;
+        //    }
 
-        }
+        //}
 
-        private async void anewObject()
-        {
-            //if (newobject != null)
-            //{
-            //  newobject   = newobject;
-            //}
-        }
+        //private async void anewObject()
+        //{
+        //    //if (newobject != null)
+        //    //{
+        //    //  newobject   = newobject;
+        //    //}
+        //}
 
-        private async void searchthecollection()
-        {
-           // Persons = await _ds.FindPerson(searchtext);
-        }
+        //private async void searchthecollection()
+        //{
+        //   // Persons = await _ds.FindPerson(searchtext);
+        //}
 
-        private async void saveallpersons()
-        {
-           // await _ds.SavePerson(Persons);
-        }
-        private async void saveanObject()
-        {
-           // await _ds.SavePerson(obj);
-        }
+        //private async void saveallpersons()
+        //{
+        //   // await _ds.SavePerson(Persons);
+        //}
+        //private async void saveanObject()
+        //{
+        //   // await _ds.SavePerson(obj);
+        //}
 
         private void getnewperson()
         {
@@ -207,10 +211,10 @@ namespace JobsII.ViewModel
     public TableTemplateViewModel(DataService ds)
     {
         _ds = ds;
-        NewObject = new RelayCommand(anewObject);
+        //NewObject = new RelayCommand(anewObject);
         //  SavePerson = new RelayCommand<Models.Person>(saveaperson);
-        SaveObject = new RelayCommand(saveanObject);
-        SearchCollection= new RelayCommand(searchthecollection);
+        //SaveObject = new RelayCommand(saveanObject);
+        //SearchCollection= new RelayCommand(searchthecollection);
      
       //  DeleteObject = new RelayCommand<Person>(deleteobject);
     //    Persons = ds.GetAllPersons();

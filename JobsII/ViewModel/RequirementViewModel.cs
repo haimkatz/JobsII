@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 using JobsII.Models;
 using JobsII.Repository;
 
@@ -120,7 +121,7 @@ namespace JobsII.ViewModel
         public RelayCommand SaveObject { get; set; }
         public RelayCommand SearchCollection { get; set; }
         public RelayCommand<object> ChangeSelectedPerson { get; set; }
-        public RelayCommand<object> DeleteObject { get; set; }
+        public RelayCommand DeleteObject { get; set; }
         /// <summary>
         /// Gets the NewPerson.
         /// </summary>
@@ -130,7 +131,7 @@ namespace JobsII.ViewModel
         /// </summary>
       
 
-        private async void deletaneObject(object obj)
+        private  void deletaneObject(object obj)
         {
             try
             {
@@ -140,26 +141,26 @@ namespace JobsII.ViewModel
 
             catch (Exception e)
             {
-                // return e.Message;
+                Messenger.Default.Send<errormessage>(new errormessage { errormsg = e.Message, isvisible = true });
             }
 
         }
 
-        private async void anewObject()
+        private  void anewObject()
         {
             selectedrequirement = new Models.Requirement();
             requirements.Add(selectedrequirement);
         }
 
-        private async void searchthecollection()
+        private  void searchthecollection()
         {
            // Requirements = await _ds.FindPerson(searchtext);
         }
 
-        private async void saveallpersons()
-        {
-           // await _ds.SavePerson(Requirements);
-        }
+        //private async void saveallpersons()
+        //{
+        //   // await _ds.SavePerson(Requirements);
+        //}
         private async void saveanObject()
         {
             await _ds.SaveRequirement(selectedrequirement);
@@ -171,7 +172,14 @@ namespace JobsII.ViewModel
             selectedrequirement = new Models.Requirement();
             requirements.Add(selectedrequirement);
         }
-
+  private void deleteobject()
+        {
+            if (selectedrequirement != null)
+            {
+                _ds.deleteRequirement(selectedrequirement);
+                requirements.Remove(selectedrequirement);
+            }
+        }
     
 
     public RequirementViewModel(DataService ds)
@@ -181,10 +189,13 @@ namespace JobsII.ViewModel
         //  SavePerson = new RelayCommand<Models.Person>(saveaperson);
         SaveObject = new RelayCommand(saveanObject);
         SearchCollection= new RelayCommand(searchthecollection);
+        DeleteObject = new RelayCommand(deleteobject);
      
       //  DeleteObject = new RelayCommand<Person>(deleteobject);
       requirements = ds.getAllRequirements();
     //    departments = ds.GetAllDepartments();
     }
+
+      
     }
 }

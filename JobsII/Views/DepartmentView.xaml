@@ -8,11 +8,13 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:Models="clr-namespace:JobsII.Models" x:Class="JobsII.Views.DepartmentView"
         mc:Ignorable="d ignore"
-        Loaded="UserControl_Loaded">
+        Loaded="UserControl_Loaded"
+    Unloaded="UserControl_Unloaded">
 
     <UserControl.Resources>
         <CollectionViewSource x:Key="departmentViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Department}, CreateList=True}"/>
         <CollectionViewSource x:Key="personViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Person}, CreateList=True}"/>
+        <CollectionViewSource x:Key="jobViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Job}, CreateList=True}"/>
     </UserControl.Resources>
     <UserControl.DataContext>
         <Binding Path="DepartmentViewModel" Source="{StaticResource Locator}"/>
@@ -21,36 +23,50 @@
     <Grid x:Name="mainGrid" FlowDirection="RightToLeft">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="*"/>
+           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="800"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel    Grid.Row="0" Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="112,-5,0,5">
-           
 
-            <Button Margin ="5" Content="New" Command="{Binding newdepartment}" />
-            <Button x:Name="Savebtn" Margin ="5" Content="Save" Command="{Binding SaveDepartments}" />
+
+            <Button Margin ="5" Content="חדש" Command="{Binding NewDepartment}" />
+            <Button x:Name="Savebtn" Margin ="5" Content="שמור" Command="{Binding SaveDepartments}" />
+            <Button x:Name="Deletebtn" Margin="5" Content="מחק" Command="{Binding DeleteDepartment}"/>
             <Button Margin="5" Content="Exit"/>
 
         </StackPanel>
         <DataGrid x:Name="departmentDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding departments}"
                   Grid.Row="1" Grid.Column="0"
-                  SelectedItem="{Binding selectedDepartment ,Mode=TwoWay}"
-                  RowDetailsVisibilityMode="VisibleWhenSelected">
+                  SelectedItem="{Binding selectedDepartment ,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  RowDetailsVisibilityMode="VisibleWhenSelected"
+                  CanUserAddRows="False">
             <DataGrid.Columns>
-                <DataGridTemplateColumn x:Name="assdepartmentheadidColumn" Header="assdepartmentheadid" Width="SizeToHeader">
+               
+                    <DataGridTemplateColumn x:Name="institutecol" Header="מכון" Width="76">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox  ItemsSource="{Binding InstituteViewModel.institutes, Source={StaticResource Locator}}" 
+                                DisplayMemberPath="fullname"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding Instituteid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="departmentheadidcol" Header="יור" Width="76">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox  ItemsSource="{Binding DepartmentViewModel.persons, Source={StaticResource Locator}}" 
                                 DisplayMemberPath="lastname"
                                 SelectedValuePath="id"
-                                SelectedValue="{Binding assdepartmentheadid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                SelectedValue="{Binding departmentheadid, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="departmentheadidColumn" Header="departmentheadid" Width="SizeToHeader">
+                <DataGridTemplateColumn x:Name="assdepartmentheadidColumn" Header="סגן יור" Width="76">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox
@@ -58,13 +74,18 @@
                                 ItemsSource="{Binding DepartmentViewModel.persons, Source={StaticResource Locator}}" 
                                 DisplayMemberPath="lastname"
                                 SelectedValuePath="id"
-                                SelectedValue="{Binding departmentheadid, Mode=TwoWay}"
+                                SelectedValue="{Binding assdepartmentheadid , Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             FlowDirection="RightToLeft"
                            />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="fullnameColumn" Binding="{Binding fullname}" Header="fullname" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="fullnameColumn" Binding="{Binding fullname}" Header="שם מלא" Width="100"/>
+
+                <DataGridTextColumn x:Name="shortnameColumn" Binding="{Binding shortname}" Header="שם מקוצר" Width="70"/>
+                <DataGridTextColumn x:Name="EfullnameColumn" Binding="{Binding Efullname}" Header="English Fullname" Width="100"/>
+
+                <DataGridTextColumn x:Name="EshortnameColumn" Binding="{Binding Eshortname}" Header="English Short" Width="70"/>
                 <DataGridTemplateColumn x:Name="idColumn" Header="id" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -72,8 +93,55 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="shortnameColumn" Binding="{Binding shortname}" Header="shortname" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="SortColumn" Header="מיון" Binding="{Binding Sortname, Mode=OneWay}" />
             </DataGrid.Columns>
+        </DataGrid>
+        <GridSplitter Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" ResizeDirection="Rows" VerticalAlignment="Bottom"  HorizontalAlignment="Stretch" Background="Aqua" Height="2"/>
+        <DataGrid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" FlowDirection="RightToLeft" 
+                  ItemsSource="{Binding jobs}" AutoGenerateColumns="False" Margin="5,4,5,5">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="InstCol" Binding="{Binding department.institute.shortname}" Header="מכון" Width="55"/>
+                <!--<DataGridTextColumn x:Name="idColumn" Binding="{Binding id}" Header="id" Width="SizeToHeader"/>
+                <DataGridCheckBoxColumn x:Name="DeptCol" Binding="{Binding department.shortname}" Header="מחלקה" Width="SizeToHeader"/>-->
+                <DataGridTextColumn x:Name="jobshortnameColumn" Binding="{Binding jobshortname}" Header="תפקיד" Width="50"/>
+                <DataGridTextColumn x:Name="mercavaidColumn" Binding="{Binding mercavaid}" Header="מס מערכת " Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="meetingdate1Column" Header="מפגש ראשון" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding meetingdate1, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="meetingdate2" Header="מפגש שני" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding meetingdate2, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="coordinatorcolmn" Header="יור" Width="70" Binding="{Binding coordinator.firstname, Mode=TwoWay,NotifyOnValidationError=True,ValidatesOnExceptions=True}" />
+                <DataGridTextColumn x:Name="ForeignColumn" Binding="{Binding foreignapplicants}" Header="מקומות בחול" Width="80" />
+                <DataGridTextColumn x:Name="skypidColumn" Binding="{Binding skypeids}" Header="skypeid" Width="80" />
+                <DataGridCheckBoxColumn x:Name="deptformedcb" Binding="{Binding committeeformed_s1}" Header="השלמת חברי מרכז" />
+                <DataGridCheckBoxColumn x:Name="comsentcb" Binding="{Binding commlettersent}" Header="נשלח מכתב לח-מ"/>
+
+           <DataGridCheckBoxColumn x:Name="calendersentColumn" Binding="{Binding calendersent}" Header="דודל נשלח" Width="SizeToHeader"/>
+                <DataGridCheckBoxColumn x:Name="calendersetColumn" Binding="{Binding calenderset}" Header="קביעת מועד 1" Width="SizeToHeader"/>
+                <DataGridCheckBoxColumn x:Name="candidatesinformedColumn" Binding="{Binding candidatesinformed}" Header="הודעה למועמדים" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="commentsColumn" Binding="{Binding Comments}" Header="הערות" Width="SizeToHeader"/>
+                <DataGridCheckBoxColumn x:Name="filepreparedColumn" Binding="{Binding fileprepared}" Header="תיק הוכן" Width="SizeToHeader"/>
+              <DataGridCheckBoxColumn x:Name="materialsentColumn" Binding="{Binding materialsent}" Header="חומר נשלח" Width="SizeToHeader"/>
+                   <DataGridTextColumn x:Name="mercavaidColumn1" Binding="{Binding mercavaid}" Header="מס מרכבה" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="roomorderedColumn" Header="חדר הוזמן" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <DatePicker SelectedDate="{Binding roomordered, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                   <DataGridTextColumn x:Name="stage1candidatesColumn" Binding="{Binding stage1candidates}" Header="מס מועמדים" Width="SizeToHeader"/>
+                     </DataGrid.Columns>
         </DataGrid>
 
     </Grid>

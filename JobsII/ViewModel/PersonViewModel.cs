@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using JobsII.Models;
 using JobsII.Repository;
 
@@ -17,7 +20,35 @@ namespace JobsII.ViewModel
     public class PersonViewModel : ViewModelBase
     {
         private DataService _ds;
+        /// <summary>
+            /// The <see cref="genders" /> property's name.
+            /// </summary>
+        public const string gendersPropertyName = "genders";
 
+        private ObservableCollection<sex> _genders ;
+
+        /// <summary>
+        /// Sets and gets the genders property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ObservableCollection<sex> genders
+        {
+            get
+            {
+                return _genders;
+            }
+
+            set
+            {
+                if (_genders == value)
+                {
+                    return;
+                }
+
+                _genders = value;
+                RaisePropertyChanged(() => genders);
+            }
+        }
         /// <summary>
             /// The <see cref="Persons" /> property's name.
             /// </summary>
@@ -46,9 +77,14 @@ namespace JobsII.ViewModel
 
                 _persons = value;
                 if (person == null)
-                {
-                    person = _persons[0];
-                }
+                 
+                    {
+                        if (_persons.Count > 0)
+                        {
+                            person = _persons[0];
+                        }
+
+                    }
                 RaisePropertyChanged(PersonsPropertyName);
             }
         }
@@ -140,13 +176,18 @@ namespace JobsII.ViewModel
                 RaisePropertyChanged(departmentsPropertyName);
             }
         }
+
+        private Guid _sendingwindowid;
+        private bool isnew;
+
         public RelayCommand  NewPerson { get; set; }
 
-        //public RelayCommand<Models.Person> SavePerson { get; set; }
+        public RelayCommand SaveaPerson { get; set; }
         public RelayCommand SavePerson { get; set; }
         public RelayCommand SearchPerson { get; set; }
         public RelayCommand<Person> changeSelectedPerson { get; set; }
-        public RelayCommand<Person> DeletePerson { get; set; }
+        public RelayCommand DeletePerson { get; set; }
+        public RelayCommand CancelPerson { get; set; }
         /// <summary>
         /// Gets the NewPerson.
         /// </summary>
@@ -158,17 +199,42 @@ namespace JobsII.ViewModel
         {
             _ds = ds;
             NewPerson = new RelayCommand(getnewperson);
-          //  SavePerson = new RelayCommand<Models.Person>(saveaperson);
+            SaveaPerson = new RelayCommand(saveaperson);
             SavePerson = new RelayCommand(saveallpersons);
             SearchPerson = new RelayCommand(searchforaperson);
+            CancelPerson = new RelayCommand(cancelperson);
+            fillgenders();
             changeSelectedPerson = new RelayCommand<Person>(newPerson);
-            DeletePerson = new RelayCommand<Person>(deletePerson);
+            DeletePerson = new RelayCommand (deletePerson);
             Persons = ds.GetAllPersons();
             departments = ds.GetAllDepartments();
+            Messenger.Default.Register<persontoeditmessage>(this, getpersonmessage);
         }
 
-        private async void deletePerson(Person obj)
+        private void cancelperson()
         {
+            person = Persons[0];
+            Messenger.Default.Send<personreturnedmessage>(new personreturnedmessage
+            {
+                personedit = null,
+                iscancelled = true,
+                sourceWindow = _sendingwindowid,
+                isnew = isnew
+            });
+        }
+
+        private void getpersonmessage(persontoeditmessage obj)
+        {
+            this._sendingwindowid = obj.sendingWindow;
+            person = obj.person;
+            Persons.Add(person);
+            this.isnew = obj.isnew;
+        }   
+
+        private async void deletePerson()
+        {
+            Person obj = person;
+            Persons.Remove(person);
             try
             {
                 await _ds.DeletePerson(obj);
@@ -177,7 +243,7 @@ namespace JobsII.ViewModel
 
             catch (Exception e)
             {
-               // return e.Message;
+                Messenger.Default.Send<errormessage>(new errormessage {errormsg = e.Message, isvisible = true});
             }
             
         }
@@ -197,11 +263,34 @@ namespace JobsII.ViewModel
 
         private async void saveallpersons()
         {
+           
             await _ds.SavePerson(Persons);
         }
-        private async void saveaperson(Models.Person obj)
+        private async void saveaperson()
         {
-            await _ds.SavePerson(obj);
+            Person obj = selectedPerson;
+            if(obj.lastname== String.Empty)
+            { MessageBox.Show("חובה להכניס שם משפחה"); }
+            else if (selectedPerson.sex == 0)
+            {
+                MessageBox.Show("חובה לבחור מין");
+            }
+            else
+            {
+                await _ds.SavePerson(obj);
+                if (_sendingwindowid != Guid.Empty)
+                {
+                    Messenger.Default.Send<personreturnedmessage>(new personreturnedmessage
+                    {
+                        personedit = obj,
+                        sourceWindow = _sendingwindowid,
+                        iscancelled = false,
+                        isnew = isnew
+                    });
+                    _sendingwindowid = Guid.Empty;
+
+                }
+            }
         }
 
         private void getnewperson()
@@ -211,5 +300,17 @@ namespace JobsII.ViewModel
             Persons.Add(person);
         }
 
+        //private void fillgenders()
+        //{
+        //    genders = new ObservableCollection<object>();
+        //    genders.Add(new {val = 1, descript = sex.male});
+        //    genders.Add(new {val = 2, descript = sex.female});
+        //}
+       private void fillgenders()
+        {
+            genders = new ObservableCollection<sex>();
+            genders.Add( sex.male);
+            genders.Add(sex.female);
+        }
     }
 }

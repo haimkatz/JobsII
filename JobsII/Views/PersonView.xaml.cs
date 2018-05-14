@@ -1,5 +1,7 @@
 ﻿using System.Windows.Controls;
+using GalaSoft.MvvmLight.Ioc;
 using JobsII.Repository;
+using JobsII.ViewModel;
 
 namespace JobsII.Views
 {
@@ -34,5 +36,12 @@ namespace JobsII.Views
             // 	myCollectionViewSource.Source = your data
             // }
         }
+
+        private void UserControl_Unloaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            SimpleIoc.Default.Unregister<PersonViewModel>();
+            SimpleIoc.Default.Register<PersonViewModel>();
+        }
+    
     }
 }

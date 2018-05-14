@@ -182,6 +182,7 @@ namespace JobsII.ViewModel
         public const string selectedJobPropertyName = "selectedJob";
 
         private Job _selectedjob;
+        private bool isnewappregistered = false;
 
         /// <summary>
         /// Sets and gets the selectedJob property.
@@ -284,9 +285,9 @@ namespace JobsII.ViewModel
             //    departments = ds.GetAllDepartments();
         }
 
-        private async Task<ObservableCollection<Applicant>> getapplicants()
+        private ObservableCollection<Applicant> getapplicants()
         {
-           return await _ds.getapplicantsbyjobid(selectedJob.id);
+           return  _ds.getapplicantsbyjobid(selectedJob.id);
         }
        private void jobMessage()
         {
@@ -296,5 +297,30 @@ namespace JobsII.ViewModel
                 });
             
         }
+        void ReceiveNewApplmessage()
+        {
+            if (isnewappregistered ==false)
+            {
+                Messenger.Default.Register<newApplicantMessage>(this, addnewapplicant);
+            }
+            }
+
+        private void addnewapplicant(newApplicantMessage na)
+        { bool isnew = true;
+            Applicant myna = na.newapplicant;
+            foreach (Applicant a in applicants)
+            {
+                if (a.id == myna.id)
+                {
+                    isnew = false;
+                }
+            }
+            if (isnew == true)
+            {
+                applicants.Add(myna);
+            }
+            
+        }
     }
+    
 }

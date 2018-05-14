@@ -1,18 +1,204 @@
-﻿<UserControl x:Class="JobsII.Views.ReviewerView"
+﻿<UserControl
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:Models="clr-namespace:JobsII.Models"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:views="clr-namespace:JobsII.Views"
+        xmlns:vm="clr-namespace:JobsII.ViewModel"
+        x:Class="JobsII.Views.ReviewerView"
         mc:Ignorable="d ignore"
-        DataContext="{Binding ReviewerViewModel, Source={StaticResource Locator}}">
+        Loaded="UserControl_Loaded">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock Text="My Reviewer View"/>
-        </StackPanel>
-    </Grid>
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="reviewerViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Reviewer}, CreateList=True}"/>
+        <DataTemplate DataType="{x:Type vm:ReviewerViewModel}">
+            <views:ReviewerView/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <!--Main layout Grid-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid FlowDirection="RightToLeft" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+
+
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10,2,10,2">
+                <Button x:Name="Delbtn" Margin ="2" Content="הסר" Command="{Binding DeletePerson}" />
+                <Button x:Name="savebtn" Margin="2" Content="שמור" Command ="{Binding SaveReviewer}"/>
+                <Label x:Name="label1" Content="בחרי מכתב" Width="79" Margin="50,2,2,2"/>
+                <ComboBox x:Name="lettercombobox"  Width="110" Margin="3" ItemsSource="{Binding lettercombos}" SelectedItem="{Binding sellettercombo}"
+                      DisplayMemberPath="docname" />
+                <Button x:Name="RequestMail" Margin="2" Content="שלח מכתב" Command="{Binding SendEmail}" />
+
+            </StackPanel>
+            <!--<StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="10,2,10,2">
+            <Label x:Name="lastnameLabel" HorizontalAlignment="Left" Height="24" Margin="2" 
+                     Content="{Binding selectedReviewer.person.lastname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                     VerticalAlignment="Center" Width="120"/>
+
+        </StackPanel>-->
+            <StackPanel    Grid.Row="3" Grid.Column="0" Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="10,2,10,2" Background="Bisque">
+                <Label Content="חפש רפרנט" />
+                <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23"
+                     Margin="0,2,0,2" TextWrapping="Wrap" Text="{Binding searchtext, UpdateSourceTrigger= PropertyChanged}" 
+                     
+                     VerticalAlignment="Top" Width="107">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="TextChanged">
+                            <command:EventToCommand Command="{Binding SearchPerson}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBox>
+                <Button Margin ="2" Content="חדש" Command="{Binding NewPerson}" />
+                <Button x:Name="Savebtn" Margin ="2" Content="הוסף" Command="{Binding SavePerson}" />
+
+
+                <Button Margin="5" Content="Exit"/>
+            </StackPanel>
+            <!-- Reviewers Grid (per applicant)-->
+            <DataGrid x:Name="reviewerDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" FlowDirection="RightToLeft"  Grid.Row="1" Grid.Column="0"
+                  ItemsSource="{Binding reviewers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding selectedReviewer}" AutoGenerateColumns="False"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  CanUserAddRows="False">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn x:Name="lastnamecolumn" Width="80" Header="משפחה" Binding="{Binding person.lastname}"/>
+                    <DataGridTextColumn x:Name="firstnamerColumn" Width="70" Header="פרטי" Binding="{Binding person.firstname}"/>
+
+                    <DataGridTextColumn x:Name="statusidColumn" Width="SizeToHeader" Header="סטטוס" Binding="{Binding reviewerstatus.Status}"/>
+
+                    <DataGridTemplateColumn x:Name="datesentColumn" Width="SizeToHeader" Header="פנייה">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePicker SelectedDate="{Binding datesent, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn x:Name="reminderdateColumn" Width="100" Header="תזכורת">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <DatePicker SelectedDate="{Binding reminderdate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn x:Name="whynottextbox" Width="100" Header="תשובה" Binding="{Binding whynot}"/>
+                    <DataGridTextColumn x:Name="commentsColumn" Width="100" Header="הערות" Binding="{Binding comments}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <!-- Reviewers Dedails (per applicant)-->
+            <Grid x:Name="grid1" Grid.Column="0" Grid.Row="2" DataContext="{Binding selectedReviewer}"  Margin="5,10,0,0" FlowDirection="RightToLeft">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <!--<RowDefinition Height="Auto"/>-->
+
+                </Grid.RowDefinitions>
+
+                <Label Content="נשלח:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="0" VerticalAlignment="Center" Height="26" Width="58" RenderTransformOrigin="0.569,-0.885"/>
+                <DatePicker x:Name="datesentDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3,4,0,4" Grid.Row="0" SelectedDate="{Binding datesent, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Height="24" Width="102"/>
+
+                <Label Content="סטטוס:" Grid.Column="0" Grid.Row="1"/>
+                <ComboBox x:Name="statusidComboBox" Grid.Column="1" Grid.Row="1" Margin="2" FlowDirection="RightToLeft"  HorizontalAlignment="Left"
+                      DisplayMemberPath="Status" 
+                      SelectedValuePath="id"
+                      ItemsSource ="{Binding Path=ReviwerStatusViewModel.revstatus, Source={StaticResource Locator},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                     SelectedValue="{Binding Statusid}"
+                       Width="120">
+                    <!--<ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>-->
+                </ComboBox>
+
+                <Label Content="תזכורת:" Grid.Column="0" Grid.Row="2"/>
+                <DatePicker x:Name="reminderdateDatePicker" Grid.Column="1" Grid.Row="2" SelectedDate="{Binding reminderdate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="0,0,554,0"/>
+
+                <Label Content="תאריך קיבל:" Grid.Column="0" Grid.Row="3" Margin="0,0,2,0" />
+                <DatePicker x:Name="datereceivedDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,6" Grid.Row="3" 
+                        SelectedDate="{Binding datereceived, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"
+                        VerticalAlignment="Center" Height="24" Width="102"/>
+
+                <Label Content="Filepath" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+                <TextBox x:Name="filepathtextbox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="4" 
+                     Text="{Binding localpath, Mode=TwoWay, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=true}" 
+                     VerticalAlignment="Center" Width="200" AllowDrop="True" >
+                    <i:Interaction.Triggers>
+                        <!--<i:EventTrigger EventName="PreviewDragEnter" >
+                        <Custom:EventToCommand Command="{Binding Mode=OneWay, Path= DragFile}" PassEventArgsToCommand="True"/>
+                    </i:EventTrigger>-->
+                        <i:EventTrigger EventName="Drop">
+                            <command:EventToCommand Command="{Binding DataContext.DragFile, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewDragOver">
+                            <command:EventToCommand Command="{Binding DataContext.PreviewDragEnterCommand, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="PreviewDragEnter">
+                            <command:EventToCommand Command="{Binding DataContext.PreviewDragEnterCommand, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+
+                    </i:Interaction.Triggers>
+                </TextBox>
+
+
+                <Label Content="הערות:" Grid.Column="0" Grid.Row="5"/>
+                <TextBox x:Name="commentsTextBox" Grid.Column="1" Grid.Row="5" Text="{Binding comments}" Margin="2,2,0,0" Width="180" HorizontalAlignment ="Left" MaxLines="3"/>
+
+                <!--<Label Content="date received" Grid.Column="0" Grid.Row="12" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Center" Height="26" Width="58" RenderTransformOrigin="0.569,-0.885"/>-->
+
+
+
+            </Grid>
+
+            <DataGrid x:Name="personDataGrid" Grid.Row="4" Grid.Column="0" FlowDirection="RightToLeft" 
+                  RowDetailsVisibilityMode="VisibleWhenSelected" 
+                  ItemsSource="{Binding Persons}"
+                  SelectedItem="{Binding selectedperson, Mode=TwoWay}"
+                  EnableRowVirtualization="True" 
+                  AutoGenerateColumns="False"  
+                      Width="Auto" 
+                      Height="100"
+                      Margin="4"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged" SourceObject="{Binding Mode=OneWay}">
+                    <Custom:EventToCommand/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="lastnamerColumn" Width="90" Header="משפחה" Binding="{Binding lastname}"/>
+                    <DataGridTextColumn x:Name="firstnamereColumn" Width="70" Header="פרטי" Binding="{Binding firstname}"/>
+                    <DataGridTextColumn x:Name="institutionrColumn" Width="90" Header="מוסד" Binding="{Binding institution}"/>
+                    <DataGridTextColumn x:Name="countryrColumn" Width="70" Header="ארץ" Binding="{Binding country}"/>
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

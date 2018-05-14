@@ -4,14 +4,14 @@ using System.Windows.Controls;
 namespace JobsII.Views
 {
     /// <summary>
-    /// Description for AddApplicantView.
+    /// Description for RemindersView.
     /// </summary>
-    public partial class AddApplicantView : UserControl
+    public partial class RemindersView : UserControl
     {
         /// <summary>
-        /// Initializes a new instance of the AddApplicantView class.
+        /// Initializes a new instance of the RemindersView class.
         /// </summary>
-        public AddApplicantView()
+        public RemindersView()
         {
             InitializeComponent();
         }

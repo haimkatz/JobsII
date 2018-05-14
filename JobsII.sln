@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobsII", "JobsII\JobsII.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmLight1", "MvvmLight1\MvvmLight1.csproj", "{10EBB3EE-C303-4493-8BDB-E029790CFDB8}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "JobsIIsu", "JobsIIsu\JobsIIsu.vdproj", "{4B848D91-49DE-4541-9AE2-1FF0531AE1DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,9 +20,10 @@ Global
 		{EEC068AE-713B-42E7-9197-726E345F1CA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEC068AE-713B-42E7-9197-726E345F1CA1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10EBB3EE-C303-4493-8BDB-E029790CFDB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10EBB3EE-C303-4493-8BDB-E029790CFDB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10EBB3EE-C303-4493-8BDB-E029790CFDB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10EBB3EE-C303-4493-8BDB-E029790CFDB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B848D91-49DE-4541-9AE2-1FF0531AE1DC}.Debug|Any CPU.ActiveCfg = Debug
+		{4B848D91-49DE-4541-9AE2-1FF0531AE1DC}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

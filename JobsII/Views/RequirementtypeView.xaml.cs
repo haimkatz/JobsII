@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace JobsII.ViewModel
 {
@@ -26,6 +27,12 @@ namespace JobsII.ViewModel
             // 	System.Windows.Data.CollectionViewSource myCollectionViewSource = (System.Windows.Data.CollectionViewSource)this.Resources["Resource Key for CollectionViewSource"];
             // 	myCollectionViewSource.Source = your data
             // }
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SimpleIoc.Default.Unregister<RequirementViewModel>();
+            SimpleIoc.Default.Register<RequirementViewModel>();
         }
     }
 }

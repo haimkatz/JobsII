@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="JobsII.Views.MergeDocTypeView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        mc:Ignorable="d ignore"
+        DataContext="{Binding MergeDocTypeViewModel, Source={StaticResource Locator}}"
+         Unloaded="UserControl_Unloaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Row="0">
+            <Button Margin ="2" Content="חדש" Command="{Binding NewMT}" />
+            <Button x:Name="Savebtn" Margin ="2" Content="שמור" Command="{Binding SaveMT}" />
+            <Button x:Name="Delbtn" Margin ="2" Content="מחק" Command="{Binding DeleteMT}"  />
+            <Button Margin="2" Content="Exit"/>
+
+        </StackPanel>
+
+        <DataGrid x:Name="mergetypeDataGrid" AutoGenerateColumns="False" FlowDirection="RightToLeft"
+                  EnableRowVirtualization="True" 
+                  ItemsSource="{Binding mergedoctypes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectedItem="{Binding SelMD}"
+                  Grid.Row="1" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="idColumn" Binding="{Binding id}" Header="id" Width="40"/>
+                <DataGridTextColumn x:Name="languageColumn" Binding="{Binding typename}" Header="סוג" Width="120"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

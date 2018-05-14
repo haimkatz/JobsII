@@ -7,26 +7,54 @@
         xmlns:Models="clr-namespace:JobsII.Models" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
     xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
              xmlns:local="clr-namespace:JobsII.Views"
+             xmlns:vm="clr-namespace:JobsII.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-
-    <UserControl.DataContext>
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="asuc"
+             Unloaded="asuc_Unloaded">
+    <UserControl.Resources>
+    <DataTemplate DataType="{x:Type vm:ApplicantShellViewModel}">
+        <local:ApplicantShell/>
+    </DataTemplate>
+    </UserControl.Resources>
+    <!--<UserControl.DataContext>
         <Binding Mode="OneWay" Path="ApplicantShellViewModel" Source="{StaticResource Locator}"/>
-    </UserControl.DataContext>
-    <Grid FlowDirection="RightToLeft" Margin="0,20,10,0">
+    </UserControl.DataContext>-->
+    <Grid FlowDirection="RightToLeft" Margin="5" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+          ScrollViewer.VerticalScrollBarVisibility="Auto">
             <Grid.RowDefinitions>
               <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="Auto"/>
+              
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-        <DataGrid x:Name="personDataGrid" FlowDirection="LeftToRight" Grid.ColumnSpan="1"
-                  RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="0" Grid.Column="0" 
-                  ItemsSource="{Binding Applicants}"
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="47"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+           
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="7">
+                <Button Margin="5" Content="שמור" Command="{Binding SaveApplicant}" />
+                <Button Margin="5" Content="שלח מייל" Command="{Binding SendMail}" CommandParameter="applicant"/>
+                <Button Margin="5" Content="רענן" Command="{Binding Refresh}"/>
+                <Label x:Name="label" Content="בחר מכתב" Margin="5"/>
+                <ComboBox x:Name="lettercombobox"  Width="120" Margin="3" ItemsSource="{Binding lettercombos}" SelectedItem="{Binding sellettercombo}"
+                      DisplayMemberPath="docname" />
+            </StackPanel>
+            <DataGrid x:Name="personDataGrid" FlowDirection="RightToLeft" Grid.ColumnSpan="1"
+                  RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="1" Grid.Column="0" 
+                  ItemsSource="{Binding applicants,Mode=TwoWay}"
                   SelectedItem="{Binding selectedApplicant, Mode=TwoWay}"
                   EnableRowVirtualization="True" 
-                  AutoGenerateColumns="False"  HorizontalAlignment="Left" d:IsHidden="True" >
+                  AutoGenerateColumns="False"  HorizontalAlignment="Left" d:IsHidden="True"
+                 Margin="5,0,0,5" >
             <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectionChanged" SourceObject="{Binding Mode=OneWay}">
                     <Custom:EventToCommand/>
@@ -34,18 +62,79 @@
             </i:Interaction.Triggers>-->
 
             <DataGrid.Columns>
-                <DataGridTextColumn x:Name="countryColumn" Width="SizeToHeader" Header="country" Binding="{Binding country}"/>
-                <DataGridTextColumn x:Name="firstnameColumn" Width="SizeToHeader" Header="firstname" Binding="{Binding firstname}"/>
-                <DataGridTextColumn x:Name="institutionColumn" Width="SizeToHeader" Header="institution" Binding="{Binding institution}"/>
-                <DataGridTextColumn x:Name="lastnameColumn" Width="SizeToHeader" Header="lastname" Binding="{Binding lastname}"/>
+                    <DataGridTextColumn x:Name="lastnameColumn" Width="80" Header="lastname" Binding="{Binding person.lastname}"/> 
+                  <DataGridTextColumn x:Name="firstnameColumn" Width="80" Header="firstname" Binding="{Binding person.firstname}"/> 
+               <DataGridTextColumn x:Name="institutionColumn" Width="80" Header="institution" Binding="{Binding person.institution}"/>
+                <DataGridTextColumn x:Name="cityColumn" Width="100" Header="עיר" Binding="{Binding person.city}"/>
+                <DataGridTextColumn x:Name="stateColumn" Width="50" Header="state" Binding="{Binding person.state}"/>
+                <DataGridTextColumn x:Name="countryColumn" Width="80" Header="ארץ" Binding="{Binding person.country}"/>
+                <DataGridTextColumn x:Name="emailColumn" Width="120" Header="מייל" Binding="{Binding person.email}"/>
+                <DataGridTextColumn x:Name="commentsColumn" Width="120" Header="country" Binding="{Binding comments}"/>
+
+
+
+
             </DataGrid.Columns>
 
-        </DataGrid>
-        <TabControl Margin="0,2,5,0"  Grid.Column="1" FlowDirection="RightToLeft">
-           <TabItem x:Name="addapp" Content="{Binding addapplicantviewmodel}"  Header="Add/Delete"/>
-            <TabItem x:Name="reviewer" Content="{Binding reviewertviewmodel}" Header="Reviewers"/>
-            <TabItem x:Name="documents" Content="{Binding documentviewmodel}" Header="Documents"/>
-            
+            </DataGrid>
+ <Grid x:Name="AppDetails" DataContext="{Binding selectedApplicant}" Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="פעיל :" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
+            <CheckBox x:Name="activeCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" IsChecked="{Binding active, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
+            <Label Content="הערות:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="commentsTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,-15,4" Grid.Row="3" Text="{Binding comments, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="139"/>
+            <Label Content="תאריך בקשה:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+            <DatePicker x:Name="dateappliedDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="0" SelectedDate="{Binding dateapplied, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+            <Label Content="הודעה I:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+            <DatePicker x:Name="dateinformed1DatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="1" SelectedDate="{Binding dateinformed1, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+            <Label Content="הודעה 2:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+            <DatePicker x:Name="dateinformed2DatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="2" SelectedDate="{Binding dateinformed2, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
+            <Label Content="עבר לשלב II:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+            <CheckBox x:Name="flag1CheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" IsChecked="{Binding flag1, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+        </Grid>
+        </Grid>
+       
+
+        <GridSplitter  Grid.Column="0"
+                 HorizontalAlignment="Right" 
+                    VerticalAlignment="Stretch" Width="2"/>
+        <TabControl Margin="0,2,5,5"  Grid.Column="1" FlowDirection="RightToLeft" ItemsSource="{Binding MenuMessages}" SelectedItem="{Binding selectedmenuitem}"
+                     ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    HorizontalAlignment="Left">
+
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <HeaderedContentControl Header="{Binding menutext}"/>
+                  
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+
+            <TabControl.ContentTemplate>
+                    <DataTemplate>
+                    <ScrollViewer  ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ContentControl Content="{Binding Path=DataContext.selectedVM, 
+                        RelativeSource={RelativeSource AncestorType= UserControl},Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource backgroundbrush}" 
+                       Padding="5" Margin="5" />
+                    </ScrollViewer>
+                </DataTemplate>
+                </TabControl.ContentTemplate>
+       
+            <!--<TabItem x:Name="addapp" Content="{Binding addapplicantviewmodel}"  Header="הוסף מועמד"/>
+          
+            <TabItem x:Name="documents" Content="{Binding documentviewmodel}" Header="מסמכים"/>
+             <TabItem x:Name="reviewer" Content="{Binding reviewertviewmodel}" Header="רפרנטים"/> 
+            <TabItem x:Name="addreviewer" Content="{Binding addreviewerviewmodel}" Header="הוסף רפרנט"/>-->
         </TabControl>
 
         <!--<ContentControl Grid.Column="1" Content="{Binding selectedVM}"></ContentControl>-->

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GalaSoft.MvvmLight.Ioc;
+using JobsII.ViewModel;
 
 namespace JobsII.Views
 {
@@ -23,6 +25,12 @@ namespace JobsII.Views
         public ApplicantShell()
         {
             InitializeComponent();
+        }
+
+        private void asuc_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SimpleIoc.Default.Unregister<ApplicantShellViewModel>();
+            SimpleIoc.Default.Register<ApplicantShellViewModel>();
         }
     }
 }

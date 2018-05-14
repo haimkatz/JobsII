@@ -1,0 +1,141 @@
+﻿<UserControl
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:views="clr-namespace:JobsII.Views"
+             xmlns:viewModel="clr-namespace:JobsII.ViewModel"     
+        xmlns:Models="clr-namespace:JobsII.Models" x:Class="JobsII.Views.CommitteeView" 
+    
+        mc:Ignorable="d ignore"
+      Background="{DynamicResource backgroundbrush}"
+    Unloaded="UserControl_Unloaded">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type viewModel:CommitteeViewModel}">
+            <views:CommitteeView/>
+        </DataTemplate>
+        <CollectionViewSource x:Key="jobCommitteeMemberViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:jobCommitteeMember}, CreateList=True}"/>
+    </UserControl.Resources>
+    <Grid x:Name="mainGrid" FlowDirection="RightToLeft" ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="550"/>
+            <ColumnDefinition Width="Auto"/>
+
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="14,7,0,7">
+            <Button Margin="5" Content="רענן" Command="{Binding Refresh}"/>
+            <Label x:Name="label" Content="בחר מכתב" Margin="5"/>
+            <ComboBox x:Name="lettercombobox"  Width="120" Margin="3" ItemsSource="{Binding lettercombos}" SelectedItem="{Binding sellettercombo}"
+                      DisplayMemberPath="docname" />
+            <Button Margin="5" Content="שלח מייל" Command="{Binding SendMail}" CommandParameter="meeting"/>
+        </StackPanel>
+        <StackPanel    Grid.Row="0" Grid.Column="1" Orientation="Horizontal"  FlowDirection="RightToLeft" Margin="7">
+
+            <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23"
+                     Margin="0,10,0,0" TextWrapping="Wrap" Text="{Binding searchtext, UpdateSourceTrigger=PropertyChanged}" 
+                     
+                     VerticalAlignment="Top" Width="107">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <command:EventToCommand Command="{Binding SearchPerson}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <Button x:Name="Savebtn" Margin ="5" Content="הוסף" Command="{Binding AddComMem}" />
+            <Button x:Name="Editbtn" Margin ="5" Content="ערוך" Command="{Binding Edit}"/>
+            <Button Margin ="5" Content="חדש" Command="{Binding NewObject}" />
+            <Button Margin="5" Content="הסר" Command="{Binding DeleteCM}"/>
+
+
+        </StackPanel>
+
+
+        <DataGrid Grid.Column="0" x:Name="jobCommitteeMemberDataGrid" RowDetailsVisibilityMode="VisibleWhenSelected" 
+                  Grid.Row="1" ItemsSource="{Binding committeemembers, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding selectedCM, Mode=TwoWay}" EnableRowVirtualization="True" AutoGenerateColumns="False"
+                  Margin="5"
+                  CanUserAddRows="False">
+
+            <!--AlternatingRowBackground="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}-->
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="idColumn" Width="SizeToHeader" Header="id" Binding="{Binding id}" Visibility="Visible"/>
+                <DataGridTextColumn x:Name="jobidColumn" Width="SizeToHeader" Header="Jobid" Binding="{Binding Jobid}" Visibility="Visible"/>
+                <DataGridTextColumn x:Name="lastnameColumn" Width="80" Header="משפחה" Binding="{Binding person.lastname}"/>
+                <DataGridTextColumn x:Name="firstnamecolumn" Width="70" Header="פרטי" Binding="{Binding person.firstname}"/>
+                <DataGridTextColumn x:Name="institutecolumn" Width="60" Header="מכון" Binding="{Binding person.department.institute.shortname}"/>
+                <DataGridTextColumn x:Name="departmentColumn" Width="60" Header="מחלקה" Binding="{Binding person.department.shortname}"/>
+                <DataGridTextColumn x:Name="institutioncolumn" Width="70" Header="מוסד" Binding="{Binding person.institution}"/>
+
+                <!--<DataGridTemplateColumn x:Name="deptidColumn" Width="SizeToHeader" Header="מחלקה">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox
+                                
+                                  ItemsSource="{Binding PersonViewModel.departments, Source={StaticResource Locator}}" 
+                                
+                                DisplayMemberPath="shortname"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding person.Deptid,Mode=TwoWay}"
+                            FlowDirection="RightToLeft"
+                                >
+
+
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+                <DataGridTextColumn x:Name="emailcolumn" Width="90" Header="מייל" Binding="{Binding person.email, Mode=TwoWay}"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--Person Data Grid-->
+        <DataGrid x:Name="personDataGrid" FlowDirection="RightToLeft" Grid.ColumnSpan="1"
+                  RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="1" Grid.Column="1" 
+                  ItemsSource="{Binding Persons}"
+                  SelectedItem="{Binding selectedPerson, Mode=TwoWay}"
+                  EnableRowVirtualization="True" 
+                  AutoGenerateColumns="False"  HorizontalAlignment="Left" 
+                  Margin="45,25,20,2"
+                  CanUserAddRows="False">
+            <!--<i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged" SourceObject="{Binding Mode=OneWay}">
+                    <Custom:EventToCommand/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>-->
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="lastname2Column" Width="90" Header="משפחה" Binding="{Binding lastname}"/>
+                <DataGridTextColumn x:Name="firstnameColumn" Width="90" Header="פרטי" Binding="{Binding firstname}"/>
+                <DataGridTextColumn x:Name="institutionColumn" Width="90" Header="מוסד" Binding="{Binding institution}"/>
+                <DataGridTextColumn x:Name="countryColumn" Width="50" Header="ארז" Binding="{Binding country}"/>
+                <DataGridTemplateColumn x:Name="deptid2Column" Width="60" Header="מחלקה">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox                               
+                                  ItemsSource="{Binding DepartmentViewModel.departments, Source={StaticResource Locator}}" 
+                                
+                                DisplayMemberPath="shortname"
+                                SelectedValuePath="id"
+                                SelectedValue="{Binding Deptid,Mode=TwoWay}"
+                            FlowDirection="RightToLeft"
+                                >
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="emailColumn" Width="80" Header="מייל" Binding="{Binding email}"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+    </Grid>
+
+
+</UserControl>

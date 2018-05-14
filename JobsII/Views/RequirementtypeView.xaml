@@ -8,7 +8,8 @@
      xmlns:Models="clr-namespace:JobsII.Models" 
      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" 
     xmlns:Custom="http://www.galasoft.ch/mvvmlight"
-    xmlns:viewModel="clr-namespace:JobsII.ViewModel" Loaded="UserControl_Loaded" >
+    xmlns:viewModel="clr-namespace:JobsII.ViewModel" Loaded="UserControl_Loaded" 
+             Unloaded="UserControl_Unloaded">
     <UserControl.Resources>
         <CollectionViewSource x:Key="requirementViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Requirement}, CreateList=True}"/>
     </UserControl.Resources>
@@ -46,8 +47,9 @@
                 </i:Interaction.Triggers>
             </TextBox>
 
-            <Button Margin ="5" Content="New" Command="{Binding NewObject}" />
-            <Button x:Name="Savebtn" Margin ="5" Content="Save" Command="{Binding SaveObject}" />
+            <Button Margin ="5" Content="חדש" Command="{Binding NewObject}" />
+            <Button x:Name="Savebtn" Margin ="5" Content="שמור" Command="{Binding SaveObject}" />
+            <Button x:Name="Delbtn" Margin="5"  Content="הסר" Command="{Binding DeleteObject}"/>
             <Button Margin="5" Content="Exit"/>
 
         </StackPanel>

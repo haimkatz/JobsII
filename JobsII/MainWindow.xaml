@@ -9,12 +9,13 @@
         x:Class="JobsII.MainWindow"
   mc:Ignorable="d"
     FlowDirection="RightToLeft"
-       DataContext="{Binding Main, Source={StaticResource Locator}}">
-        <!--Title="MainWindow" Height="734.309" Width="1386.168" DataContext="{Binding pagePersonView, RelativeSource={RelativeSource Self}}"-->
+       DataContext="{Binding Main, Source={StaticResource Locator}}"
+    >
+    <!--Title="MainWindow" Height="734.309" Width="1386.168" DataContext="{Binding pagePersonView, RelativeSource={RelativeSource Self}}"-->
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:PersonViewModel}">
             <Views:PersonView/>
-            
+
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:DepartmentViewModel}">
             <Views:DepartmentView/>
@@ -25,29 +26,84 @@
         <DataTemplate DataType="{x:Type vm:jobViewModel}">
             <Views:JobParentView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReviwerStatusViewModel}">
+            <Views:ReviewerStatusView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:InstituteViewModel}">
+            <Views:InstitutionView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:UniversalDocViewModel}">
+            <Views:UniversalDocView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ReminderViewModel}">
+            <Views:RemindersView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LanguageViewModel}">
+            <Views:LanguagesView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MergeDocViewModel}">
+            <Views:RTFEditor/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MergeDocTypeViewModel}">
+            <Views:MergeDocTypeView/>
+        </DataTemplate>
+        <!--<Color x:Key="WindowBackground">#FFB7E6F3</Color>-->
+        <Style x:Key="CloseonFalse" TargetType="TextBlock" >
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="Closebtn" TargetType="Button" >
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsVisible}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
+    <Window.Background>
+        <RadialGradientBrush>
+            <GradientStop Color="Cornsilk"/>
+            <GradientStop Color="Wheat" Offset="10"/>
+        </RadialGradientBrush>
+    </Window.Background>
 
 
-    <DockPanel FlowDirection="RightToLeft" LastChildFill="True">
+    <DockPanel FlowDirection="RightToLeft"  LastChildFill="True">
 
         <StackPanel DockPanel.Dock="Top" >
-            <ListView ItemsSource="{Binding MenuMessages}" FlowDirection="RightToLeft" SelectedItem="{Binding selectedmenuitem}" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions> 
+                <ListView ItemsSource="{Binding MenuMessages}" FlowDirection="RightToLeft" SelectedItem="{Binding selectedmenuitem}"  
+                     VerticalAlignment="Top" Width="Auto"   
+                     >
                 <ListView.ItemsPanel>
-                    <ItemsPanelTemplate> <StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
-                       
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" Background="BurlyWood" Height="40"/>
+                    </ItemsPanelTemplate>
+
                 </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate  DataType="{x:Type MenuItem}" >
-                        <TextBlock Text="{Binding menutext}"/>
+                        <TextBlock Text="{Binding menutext}" Width="60" Margin="3"  Height="20" Padding="0"/>
                     </DataTemplate>
 
                 </ListView.ItemTemplate>
             </ListView>
-         </StackPanel>  
-        
-            <ContentControl  Content="{Binding selectedVM}" ></ContentControl>
-       
-      
-
+                <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <TextBlock x:Name="errblock" Text="{Binding errblock}" Style="{DynamicResource CloseonFalse}"/>        
+                <Button x:Name="clearerrbtn" Content="נקה" Command="{Binding ClearErr}"  Margin="10,2,2,10" Style="{DynamicResource Closebtn}"/>
+               </StackPanel>  
+            </Grid>
+           
+        </StackPanel>
+        <ContentControl  Content="{Binding selectedVM}" ></ContentControl>
     </DockPanel>
 </Window>

@@ -7,6 +7,20 @@
 -->
 <GenericObjectDataSource DisplayName="Job" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
    <Children>
+      <GenericObjectDataSource DisplayName="coordinator" Version="1.0">
+         <TypeInfo>JobsII.Models.Person, JobsII, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+         <TypeUISetting>
+            <PropertyUISettings>
+               <PropertyUISetting Name="Job.coordinator">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+            </PropertyUISettings>
+         </TypeUISetting>
+      </GenericObjectDataSource>
       <GenericObjectDataSource DisplayName="department" Version="1.0">
          <TypeInfo>JobsII.Models.Department, JobsII, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
          <TypeUISetting>
@@ -23,6 +37,80 @@
       </GenericObjectDataSource>
       <GenericObjectDataSource DisplayName="applicants" Version="1.0">
          <TypeInfo>JobsII.Models.Applicant, JobsII, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+         <TypeUISetting>
+            <PropertyUISettings>
+               <PropertyUISetting Name="active">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="dateapplied">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="dateinformed1">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="dateinformed2">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="flag1">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="flag2">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="flag3">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="id">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="Jobid">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+               <PropertyUISetting Name="Personid">
+                  <ControlSettings>
+                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                        <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+                     </ControlSetting>
+                  </ControlSettings>
+               </PropertyUISetting>
+            </PropertyUISettings>
+         </TypeUISetting>
       </GenericObjectDataSource>
       <GenericObjectDataSource DisplayName="reviewer" Version="1.0">
          <TypeInfo>JobsII.Models.Reviewer, JobsII, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
@@ -32,121 +120,211 @@
          <TypeUISetting>
             <PropertyUISettings>
                <PropertyUISetting Name="Jobid">
-                  <ControlSettings>
-                     <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <ControlSettings><ControlSetting ArtifactName="Microsoft:System.Windows:WPF" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
                         <BindableControlInfo Name="ComboBox" Type="System.Windows.Controls.ComboBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-                     </ControlSetting>
-                  </ControlSettings>
+                     </ControlSetting></ControlSettings>
                </PropertyUISetting>
             </PropertyUISettings>
          </TypeUISetting>
+      </GenericObjectDataSource>
+      <GenericObjectDataSource DisplayName="jobdocs" Version="1.0">
+         <TypeInfo>JobsII.Models.jobDoc, JobsII, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+      </GenericObjectDataSource>
+      <GenericObjectDataSource DisplayName="committee" Version="1.0">
+         <TypeInfo>JobsII.Models.jobCommitteeMember, JobsII, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
       </GenericObjectDataSource>
    </Children>
    <TypeInfo>JobsII.Models.Job, JobsII, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
    <TypeUISetting>
       <PropertyUISettings>
          <PropertyUISetting Name="committeeformed">
-            <ControlSettings>
-               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+            <ControlSettings><ControlSetting ArtifactName="Microsoft:System.Windows:WPF" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
                   <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-               </ControlSetting>
-            </ControlSettings>
+               </ControlSetting></ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="coordinatorid">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="ComboBox" Type="System.Windows.Controls.ComboBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="DecisionMade">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="Deptid">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="ComboBox" Type="System.Windows.Controls.ComboBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="expenseforms">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="fileprepared">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="CheckBox" Type="System.Windows.Controls.CheckBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="flag1">
-            <ControlSettings>
-               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+            <ControlSettings><ControlSetting ArtifactName="Microsoft:System.Windows:WPF" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
                   <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
-               </ControlSetting>
-            </ControlSettings>
+               </ControlSetting></ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="flag2">
-            <ControlSettings>
-               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+            <ControlSettings><ControlSetting ArtifactName="Microsoft:System.Windows:WPF" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
                   <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
-               </ControlSetting>
-            </ControlSettings>
+               </ControlSetting></ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="flag3">
-            <ControlSettings>
-               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+            <ControlSettings><ControlSetting ArtifactName="Microsoft:System.Windows:WPF" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
                   <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
-               </ControlSetting>
-            </ControlSettings>
+               </ControlSetting></ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="materialsent1">
-            <ControlSettings>
-               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+            <ControlSettings><ControlSetting ArtifactName="Microsoft:System.Windows:WPF" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
                   <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-               </ControlSetting>
-            </ControlSettings>
+               </ControlSetting></ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="materialsent2">
-            <ControlSettings>
-               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+            <ControlSettings><ControlSetting ArtifactName="Microsoft:System.Windows:WPF" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
                   <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
-               </ControlSetting>
-            </ControlSettings>
+               </ControlSetting></ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="roomordered">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="Label" Type="System.Windows.Controls.Label" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="meetingdate1">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="Label" Type="System.Windows.Controls.Label" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="meetingdate2">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="DatePicker" Type="System.Windows.Controls.DatePicker" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="Label" Type="System.Windows.Controls.Label" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>
          <PropertyUISetting Name="jobfullname">
             <ControlSettings>
                <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
-                  <BindableControlInfo Name="TextBox" Type="System.Windows.Controls.TextBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="calenderset">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="CheckBox" Type="System.Windows.Controls.CheckBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="candidatesinformed">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="CheckBox" Type="System.Windows.Controls.CheckBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="committeeformed_s1">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="CheckBox" Type="System.Windows.Controls.CheckBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="commlettersent">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="CheckBox" Type="System.Windows.Controls.CheckBox" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="Comments">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="jobnameEnglish">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="skypeid">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="skypeids">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="stage">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="tenderend">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="tenderstart">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="[None]" Type="Microsoft.VSDesigner.Data.BindManager.NoneControlPlaceHolder" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="stage1candidates">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="Label" Type="System.Windows.Controls.Label" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="foreignapplicants">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="Label" Type="System.Windows.Controls.Label" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+               </ControlSetting>
+            </ControlSettings>
+         </PropertyUISetting>
+         <PropertyUISetting Name="jobshortname">
+            <ControlSettings>
+               <ControlSetting ArtifactName="Microsoft:System.Windows:WPF">
+                  <BindableControlInfo Name="Label" Type="System.Windows.Controls.Label" AssemblyName="PresentationFramework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
                </ControlSetting>
             </ControlSettings>
          </PropertyUISetting>

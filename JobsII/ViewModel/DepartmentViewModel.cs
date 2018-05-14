@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using JobsII.Models;
@@ -33,6 +34,7 @@ namespace JobsII.ViewModel
         /// Sets and gets the departments property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
+
         public ObservableCollection<Department> departments
         {
             get
@@ -62,7 +64,7 @@ namespace JobsII.ViewModel
         /// Sets and gets the selectedDepartment property.
         /// Changes to that property's value raise the PropertyChanged event. 
         /// </summary>
-        public Department selectedDepartment
+        public   Department selectedDepartment
         {
             get
             {
@@ -77,7 +79,41 @@ namespace JobsII.ViewModel
                 }
 
                 _selectedDepartment = value;
+                if (_selectedDepartment != null)
+                {
+                    getjobsbydept();
+                }
                 RaisePropertyChanged(selectedDepartmentPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="jobs" /> property's name.
+        /// </summary>
+        public const string jobsPropertyName = "jobs";
+
+        private ObservableCollection<Job> _jobs ;
+
+        /// <summary>
+        /// Sets and gets the jobs property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ObservableCollection<Job> jobs
+        {
+            get
+            {
+                return _jobs;
+            }
+
+            set
+            {
+                if (_jobs == value)
+                {
+                    return;
+                }
+
+                _jobs = value;
+                RaisePropertyChanged(jobsPropertyName);
             }
         }
         /// <summary>
@@ -129,7 +165,8 @@ namespace JobsII.ViewModel
 
         private void deleteDepartment()
         {
-            throw new NotImplementedException();
+           _ds.DeleteDepartment(selectedDepartment);
+            departments.Remove(selectedDepartment);
         }
 
         private async void  savedepartments()
@@ -139,7 +176,13 @@ namespace JobsII.ViewModel
 
         private void newdepartment()
         {
-            throw new NotImplementedException();
+           selectedDepartment = new Department();
+            departments.Add(selectedDepartment);
+        }
+
+        private  void getjobsbydept()
+        {
+            jobs =  _ds.jobsbyDept(selectedDepartment.id);
         }
     }
 }

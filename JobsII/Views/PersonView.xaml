@@ -8,20 +8,20 @@
     xmlns:Custom="http://www.galasoft.ch/mvvmlight" 
     x:Class="JobsII.Views.PersonView"
         mc:Ignorable="d ignore"
-        Height="507.5" Width="733" Loaded="UserControl_Loaded"
+        Height="507.5" Width="733" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
     >
 
     <UserControl.Resources>
         <CollectionViewSource x:Key="personViewSource" 
                               d:DesignSource="{d:DesignInstance {x:Type Models:Person}, CreateList=True}"/>
-        
+
     </UserControl.Resources>
-   
+
     <UserControl.DataContext>
         <Binding Mode="OneWay" Path="PersonViewModel" Source="{StaticResource Locator}"/>
     </UserControl.DataContext>
 
-    <Grid x:Name="mainGrid" FlowDirection="RightToLeft">
+    <Grid x:Name="mainGrid" FlowDirection="RightToLeft" Margin="0,0,0,-44">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
@@ -42,10 +42,11 @@
                 </i:Interaction.Triggers>
             </TextBox>
 
-            <Button Margin ="5" Content="New" Command="{Binding NewPerson}" />
-            <Button x:Name="Savebtn" Margin ="5" Content="Save" Command="{Binding SavePerson}" />
+            <Button Margin ="2" Content="חדש" Command="{Binding NewPerson}" />
+            <Button x:Name="Savebtn" Margin ="2" Content="שמור" Command="{Binding SavePerson}" />
+            <Button x:Name="Deletebtn" Margin="2" Content="מחק" Command="{Binding DeletePerson}"/>
             <Button Margin="5" Content="Exit"/>
-          
+
         </StackPanel>
         <DataGrid x:Name="personDataGrid" FlowDirection="LeftToRight" Grid.ColumnSpan="1"
                   RowDetailsVisibilityMode="VisibleWhenSelected" Grid.Row="1" Grid.Column="0" 
@@ -105,21 +106,27 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <Label Content="lastname:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="0" VerticalAlignment="Center"/>
+           
+            <Label Content="משפחה (חובה)" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="0" VerticalAlignment="Center"/>
             <TextBox x:Name="lastnameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="0" Text="{Binding lastname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
-            <Label Content="address:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="addressTextBox" Grid.Column="1" Grid.Row="5" Text="{Binding address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-            <Label Content="city:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="6" VerticalAlignment="Center"/>
-            <TextBox x:Name="cityTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="6" Text="{Binding city, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="country:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="7" VerticalAlignment="Center"/>
-            <TextBox x:Name="countryTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="7" Text="{Binding country, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="Deptid:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="2" VerticalAlignment="Center"/>
-            <ComboBox x:Name="deptidComboBox" Grid.Column="1" DisplayMemberPath="shortname" HorizontalAlignment="Left" Height="Auto" 
+            <Label Content="פרטי (חובה):" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="1" VerticalAlignment="Center"/>
+            <TextBox x:Name="firstnameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="1" Text="{Binding firstname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="last name מועמד" Grid.Column="0" HorizontalAlignment="Left" Margin="0,4,0,2" Grid.Row="2" VerticalAlignment="Center"/>
+            <TextBox x:Name="lastnamיeTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="2" Text="{Binding lastnameh, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+
+            <Label Content="first name מועמד:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBox x:Name="firstnamehTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="3" Text="{Binding firstnameh, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+
+            <Label Content="מחלקה:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="4" VerticalAlignment="Center"/>
+            <ComboBox x:Name="deptidComboBox" Grid.Column="1" Grid.Row="4" DisplayMemberPath="shortname" HorizontalAlignment="Left" Height="Auto" 
                       SelectedValuePath="id"
                       ItemsSource="{Binding PersonViewModel.departments, Source={StaticResource Locator}}" 
-                      Margin="3,5,0,5" Grid.Row="2" VerticalAlignment="Center" Width="120" 
+                      Margin="3,5,0,5"  VerticalAlignment="Center" Width="120" 
                       SelectedValue="{Binding Deptid}">
                 <ComboBox.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -127,20 +134,47 @@
                     </ItemsPanelTemplate>
                 </ComboBox.ItemsPanel>
             </ComboBox>
-            <Label Content="email:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="3" VerticalAlignment="Center"/>
-            <TextBox x:Name="emailTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="3" Text="{Binding email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="firstname:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="1" VerticalAlignment="Center"/>
-            <TextBox x:Name="firstnameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="1" Text="{Binding firstname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,4,0,3" Grid.Row="11" VerticalAlignment="Center"/>
-            <TextBox x:Name="idTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="11" Text="{Binding id, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="idnum:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="10" VerticalAlignment="Center"/>
-            <TextBox x:Name="idnumTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="10" Text="{Binding idnum, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="institution:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="4" VerticalAlignment="Center"/>
-            <TextBox x:Name="institutionTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="4" Text="{Binding institution, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="state:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="8" VerticalAlignment="Center"/>
-            <TextBox x:Name="stateTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="8" Text="{Binding state, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-            <Label Content="zip:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="9" VerticalAlignment="Center"/>
-            <TextBox x:Name="zipTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="9" Text="{Binding zip, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+           
+            <Label Content="email:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="5" VerticalAlignment="Center"/>
+            <TextBox x:Name="emailTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,5,-107,4" Grid.Row="5" Text="{Binding email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="229"/>
+
+            <Label Content="מוסד:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="6" VerticalAlignment="Center"/>
+            <TextBox x:Name="institutionTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,5,-107,4" Grid.Row="6" Text="{Binding institution, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="229"/>
+
+            <Label Content="כתובת:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="7" VerticalAlignment="Center"/>
+            <TextBox x:Name="addressTextBox" Grid.Column="1" Grid.Row="7" Text="{Binding address, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="0,0,-107,0"/>
+           
+            <Label Content="עיר:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="8" VerticalAlignment="Center"/>
+            <TextBox x:Name="cityTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="8" Text="{Binding city, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+           
+            <Label Content="ארץ:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="9" VerticalAlignment="Center"/>
+            <TextBox x:Name="countryTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="9" Text="{Binding country, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+               
+            <Label Content="state:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="10" VerticalAlignment="Center"/>
+            <TextBox x:Name="stateTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="10" Text="{Binding state, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+          
+            <Label Content="מיקוד:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="11" VerticalAlignment="Center"/>
+            <TextBox x:Name="zipTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="11" Text="{Binding zip, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+
+
+            <Label Content="ת.ז.:" Grid.Column="0" HorizontalAlignment="Left" Margin="3,3,0,3" Grid.Row="12" VerticalAlignment="Center"/>
+            <TextBox x:Name="idnumTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,4,0,4" Grid.Row="12" Text="{Binding idnum, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+         
+            <Label Content="skype_id.:" Grid.Column="0" Grid.Row="13" HorizontalAlignment="Left" Margin="3,3,0,3"  VerticalAlignment="Center"/>
+            <TextBox x:Name="skypeidTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="3,5,0,5" Grid.Row="13" Text="{Binding skypeid, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+            <Label Content="{Binding id}" Grid.Column="0" HorizontalAlignment="Left" Margin="3,4,0,3" Grid.Row="15" VerticalAlignment="Center"/>
+            <Label Content="מין:" Grid.Column="0" Grid.Row="14" HorizontalAlignment="Left" Margin="3,3,0,3"  VerticalAlignment="Center"/>
+            <ComboBox x:Name="sexComboBox" Grid.Column="1"  HorizontalAlignment="Left" Height="Auto" 
+                    
+                      ItemsSource="{Binding DataContext.genders, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                      Margin="3,6,-64,5" Grid.Row="14" VerticalAlignment="Center" Width="186" 
+                      SelectedValue="{Binding sex}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+            </ComboBox>
         </Grid>
-       </Grid>
+    </Grid>
 </UserControl>

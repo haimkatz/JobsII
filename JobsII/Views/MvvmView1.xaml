@@ -1,18 +1,21 @@
-﻿<UserControl x:Class="JobsII.Views.AddApplicantView"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ignore="http://www.galasoft.ch/ignore"
+        xmlns:Models="clr-namespace:JobsII.Models" xmlns:ViewModel="clr-namespace:JobsII.ViewModel" x:Class="JobsII.Views.MvvmView1"
         mc:Ignorable="d ignore"
-        DataContext="{Binding AddApplicantViewModel, Source={StaticResource Locator}}">
+        Loaded="Window_Loaded">
+   
+   
+
+
+    <Window.DataContext>
+        <Binding Path="PersonViewModel" Source="{StaticResource Locator}"/>
+    </Window.DataContext>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock Text="My Add Applicant View"/>
-        </StackPanel>
+     
     </Grid>
-</UserControl>
+</Window>

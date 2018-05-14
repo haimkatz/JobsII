@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using JobsII.Messages;
 using JobsII.Repository;
 using JobsII.Views;
@@ -81,25 +83,7 @@ namespace JobsII.ViewModel
             }
         }
 
-        private void switchviewmodel()
-        {
-            switch (selectedmenuitem.viewModelName)
-            {
-                case "PersonViewModel":
-
-                    selectedVM = personviewmodel;
-                    break;
-                case "DepartmentViewModel":
-                    selectedVM = departmentviewmodel;
-                    break;
-                case "RequirementViewModel":
-                    selectedVM = requirementviewmodel;
-                    break;
-                case "jobViewModel":
-                    selectedVM = jobviewmodel;
-                    break;
-            }
-        }
+       
 
         /// <summary>
         /// The <see cref="MenuMessages" /> property's name.
@@ -219,6 +203,65 @@ namespace JobsII.ViewModel
             }
         }
         /// <summary>
+        /// The <see cref="languageviewmodel" /> property's name.
+        /// </summary>
+        public const string languageviewmodelPropertyName = "languageviewmodel";
+
+        private LanguageViewModel _languageviewmodel;
+
+        /// <summary>
+        /// Sets and gets the languageviewmodel property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public LanguageViewModel languageviewmodel
+        {
+            get
+            {
+                return _languageviewmodel;
+            }
+
+            set
+            {
+                if (_languageviewmodel == value)
+                {
+                    return;
+                }
+
+                _languageviewmodel = value;
+                RaisePropertyChanged(languageviewmodelPropertyName);
+            }
+        }
+
+        /// <summary>
+        /// The <see cref="reviewerstatusviewmodel" /> property's name.
+        /// </summary>
+        public const string reviewerstatusviewmodelPropertyName = "reviewerstatusviewmodel";
+
+        private ReviwerStatusViewModel _reviewerstatusviewmodel;
+
+        /// <summary>
+        /// Sets and gets the reviewerstatusviewmodel property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public ReviwerStatusViewModel reviewerstatusviewmodel
+        {
+            get
+            {
+                return _reviewerstatusviewmodel;
+            }
+
+            set
+            {
+                if (_reviewerstatusviewmodel == value)
+                {
+                    return;
+                }
+
+                _reviewerstatusviewmodel = value;
+                RaisePropertyChanged(reviewerstatusviewmodelPropertyName);
+            }
+        }
+        /// <summary>
         /// The <see cref="jobviewmodel" /> property's name.
         /// </summary>
         public const string jobviewmodelPropertyName = "jobviewmodel";
@@ -247,6 +290,201 @@ namespace JobsII.ViewModel
                 RaisePropertyChanged(jobviewmodelPropertyName);
             }
         }
+        /// <summary>
+        /// The <see cref="instituteviewmodel" /> property's name.
+        /// </summary>
+        public const string instituteviewmodelPropertyName = "instituteviewmodel";
+
+        private object _instituteviewmodel;
+
+        /// <summary>
+        /// Sets and gets the instituteviewmodel property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public object instituteviewmodel
+        {
+            get
+            {
+                return _instituteviewmodel;
+            }
+
+            set
+            {
+                if (_instituteviewmodel == value)
+                {
+                    return;
+                }
+
+                _instituteviewmodel = value;
+                RaisePropertyChanged(instituteviewmodelPropertyName);
+            }
+        }
+        /// <summary>
+        /// The <see cref="universaldocviewmodel" /> property's name.
+        /// </summary>
+        public const string universaldocviewmodelPropertyName = "universaldocviewmodel";
+
+        private object _universaldocviewmodel;
+
+        /// <summary>
+        /// Sets and gets the universaldocviewmodel property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public object universaldocviewmodel
+        {
+            get
+            {
+                return _universaldocviewmodel;
+            }
+
+            set
+            {
+                if (_universaldocviewmodel == value)
+                {
+                    return;
+                }
+
+                _universaldocviewmodel = value;
+                RaisePropertyChanged(universaldocviewmodelPropertyName);
+            }
+        }
+        /// <summary>
+        /// The <see cref="mergedocviewmodel" /> property's name.
+        /// </summary>
+        public const string mergedocviewmodelPropertyName = "mergedocviewmodel";
+
+        private Object _mergedocviewmodel;
+
+        /// <summary>
+        /// Sets and gets the mergedocviewmodel property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public Object mergedocviewmodel
+        {
+            get
+            {
+                return _mergedocviewmodel;
+            }
+
+            set
+            {
+                if (_mergedocviewmodel == value)
+                {
+                    return;
+                }
+
+                _mergedocviewmodel = value;
+                RaisePropertyChanged(mergedocviewmodelPropertyName);
+            }
+        }
+        /// <summary>
+        /// The <see cref="reminderviewmodelviewmodel" /> property's name.
+        /// </summary>
+        public const string reminderviewmodelPropertyName = "reminderviewmodel";
+
+        private object _reminderviewmodel;
+
+        public object reminderviewmodel
+        {
+            get
+            {
+                return _reminderviewmodel;
+            }
+
+            set
+            {
+                if (_reminderviewmodel == value)
+                {
+                    return;
+                }
+
+                _reminderviewmodel = value;
+                RaisePropertyChanged(reminderviewmodelPropertyName);
+            }
+        }
+        /// The <see cref="mergedoctypeviewmodel" /> property's name.
+        /// </summary>
+        public const string mergedoctypeviewmodelPropertyName = "mergedoctypeviewmodel";
+
+        private object _mergedoctypeviewmodel;
+
+        public object mergedoctypeviewmodel
+        {
+            get
+            {
+                return _mergedoctypeviewmodel;
+            }
+
+            set
+            {
+                if (_mergedoctypeviewmodel == value)
+                {
+                    return;
+                }
+
+                _mergedoctypeviewmodel = value;
+                RaisePropertyChanged(mergedoctypeviewmodelPropertyName);
+            }
+        }
+        /// <summary>
+        /// The <see cref="IsVisible" /> property's name.
+        /// </summary>
+        public const string IsVisiblePropertyName = "IsVisible";
+
+        private bool _IsVisible = false;
+
+        /// <summary>
+        /// Sets and gets the IsVisible property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public bool IsVisible
+        {
+            get
+            {
+                return _IsVisible;
+            }
+
+            set
+            {
+                if (_IsVisible == value)
+                {
+                    return;
+                }
+
+                _IsVisible = value;
+                RaisePropertyChanged(IsVisiblePropertyName);
+            }
+        }
+        /// <summary>
+        /// The <see cref="errblock" /> property's name.
+        /// </summary>
+        public const string errblockPropertyName = "errblock";
+
+        private string _errblock ;
+
+        /// <summary>
+        /// Sets and gets the errblock property.
+        /// Changes to that property's value raise the PropertyChanged event. 
+        /// </summary>
+        public string errblock
+        {
+            get
+            {
+                return _errblock;
+            }
+
+            set
+            {
+                if (_errblock == value)
+                {
+                    return;
+                }
+
+                _errblock = value;
+                RaisePropertyChanged(errblockPropertyName);
+            }
+        }
+        public RelayCommand ClearErr { get; set; }
         public MainViewModel(DataService myds) 
         {
             ////if (IsInDesignMode)
@@ -257,20 +495,59 @@ namespace JobsII.ViewModel
             ////{
             ////    // Code runs "for real"
             ////}
+            ViewModelLocator vml = new ViewModelLocator();
+            personviewmodel =vml.PersonViewModel;
+            departmentviewmodel = vml.DepartmentViewModel;
+            requirementviewmodel = vml.RequirementViewModel;
+            jobviewmodel = vml.jobViewModel;
+            reviewerstatusviewmodel = vml.ReviwerStatusViewModel;
+            instituteviewmodel = vml.InstituteViewModel;
+            universaldocviewmodel = vml.UniversalDocViewModel;
+            reminderviewmodel = vml.ReminderViewModel;
+            languageviewmodel =vml.LanguageViewModel;
+            mergedocviewmodel = vml.MergeDocViewModel;
+            mergedoctypeviewmodel = vml.MergeDocTypeViewModel;
 
-            personviewmodel = new PersonViewModel(myds);
-            departmentviewmodel = new DepartmentViewModel(myds);
-            requirementviewmodel = new RequirementViewModel(myds);
-            jobviewmodel = new jobViewModel(myds);
+
+            //personviewmodel = new PersonViewModel(myds);
+            //departmentviewmodel = new DepartmentViewModel(myds);
+            //requirementviewmodel = new RequirementViewModel(myds);
+            //jobviewmodel = new jobViewModel(myds);
+            //reviewerstatusviewmodel = new ReviwerStatusViewModel(myds);
+            //instituteviewmodel = new InstituteViewModel(myds);
+            //universaldocviewmodel = new UniversalDocViewModel(myds);
+            //reminderviewmodel = new ReminderViewModel(myds);
+            //languageviewmodel = new LanguageViewModel(myds);
+            //mergedocviewmodel = new MergeDocViewModel(myds);
+            //mergedoctypeviewmodel = new MergeDocTypeViewModel(myds);
+            Messenger.Default.Register<errormessage>(this, geterrormessage);
+            ClearErr = new RelayCommand(() =>
+            {
+                errblock = string.Empty;
+                IsVisible = false;
+            });
             constructMenu();
 
+        }
+
+        private void geterrormessage(errormessage obj)
+        {
+            errblock = obj.errormsg;
+            IsVisible = obj.isvisible;
         }
 
         private void constructMenu()
         {
             MenuMessages = new ObservableCollection<MenuMessage>();
             MenuMessages.Add(new MenuMessage
+         
             {
+                menutext = "משרות",
+                isactive = true,
+                newWindow = false,
+                viewModelName = "jobViewModel"
+            });
+             MenuMessages.Add(new MenuMessage {
                 menutext = "אנשים",
                 isactive = true,
                 newWindow = false,
@@ -290,22 +567,96 @@ namespace JobsII.ViewModel
                 newWindow = false,
                 viewModelName = "RequirementViewModel"
             });
+
             MenuMessages.Add(new MenuMessage
             {
-                menutext = "משרות",
+                menutext = "סטטוס רפרנט",
                 isactive = true,
                 newWindow = false,
-                viewModelName = "jobViewModel"
+                viewModelName = "ReviwerStatusViewModel"
             });
-           
-            // MenuMessages.Add(new MenuMessage
-            //{
-            //    menutext = "משרות",
-            //    isactive = true,
-            //    newWindow = false,
-            //    viewModelName = "JobsViewModel"
-            //});
+            MenuMessages.Add(new MenuMessage
+            {
+                menutext = "מכונים",
+                isactive = true,
+                newWindow = false,
+                viewModelName = "InstituteViewModel"
+            });
+            MenuMessages.Add(new MenuMessage
+            {
+                menutext = "מסמכים",
+                isactive = true,
+                newWindow = false,
+                viewModelName = "UniversalDocViewModel"
+            });
+            MenuMessages.Add(new MenuMessage
+            {
+                menutext = "תזכורות",
+                isactive = true,
+                newWindow = false,
+                viewModelName = "ReminderViewModel"
+            });
+            MenuMessages.Add(new MenuMessage
+            {
+                menutext = "שפות",
+                isactive = true,
+                newWindow = false,
+                viewModelName = "LanguageViewModel"
+            });
+            MenuMessages.Add(new MenuMessage
+            {
+                menutext = "מכתבים",
+                isactive = true,
+                newWindow = false,
+                viewModelName = "MergeDocViewModel"
+            });
+            MenuMessages.Add(new MenuMessage
+            {
+                menutext = "סוגי מכתבים",
+                isactive = true,
+                newWindow = false,
+                viewModelName = "MergeDocTypeViewModel"
+            });
+        }
+        private void switchviewmodel()
+        {
+            switch (selectedmenuitem.viewModelName)
+            {
+                case "PersonViewModel":
 
+                    selectedVM = personviewmodel;
+                    break;
+                case "DepartmentViewModel":
+                    selectedVM = departmentviewmodel;
+                    break;
+                case "RequirementViewModel":
+                    selectedVM = requirementviewmodel;
+                    break;
+                case "jobViewModel":
+                    selectedVM = jobviewmodel;
+                    break;
+                case "ReviwerStatusViewModel":
+                    selectedVM = reviewerstatusviewmodel;
+                    break;
+                case "InstituteViewModel":
+                    selectedVM = instituteviewmodel;
+                    break;
+                case "UniversalDocViewModel":
+                    selectedVM = universaldocviewmodel;
+                    break;
+                case "ReminderViewModel":
+                    selectedVM = reminderviewmodel;
+                    break;
+                case "LanguageViewModel":
+                    selectedVM = languageviewmodel;
+                    break;
+                case "MergeDocViewModel":
+                    selectedVM = mergedocviewmodel;
+                    break;
+                case "MergeDocTypeViewModel":
+                    selectedVM = mergedoctypeviewmodel;
+                    break;
+            }
         }
     }
 } 

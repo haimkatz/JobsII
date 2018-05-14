@@ -1,0 +1,85 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:JobsII.Views"
+             xmlns:Models="clr-namespace:JobsII.Models" x:Class="JobsII.Views.jobgridview"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="jobViewSource" d:DesignSource="{d:DesignInstance {x:Type Models:Job}, CreateList=True}"/>
+    </UserControl.Resources>
+    <Grid DataContext="{StaticResource jobViewSource}" Margin="-388,0,-352,0">
+        <DataGrid x:Name="jobDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" 
+                  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" FlowDirection="RightToLeft"
+                  Margin="0,-10,0,10">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn x:Name="jobshortnameColumn" Header="jobshortname" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding jobshortname}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="jobsdeptNameColumn" Header="jobshortname" Width="SizeToHeader">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding department.Sortname}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn> 
+                 <DataGridCheckBoxColumn x:Name="committeeformed_s1Column" Binding="{Binding committeeformed_s1}" Header="committeeformed s 1" Width="SizeToHeader"/>
+               <DataGridCheckBoxColumn x:Name="candidatesinformedColumn" Binding="{Binding candidatesinformed}" Header="candidatesinformed" Width="SizeToHeader"/>
+             <DataGridCheckBoxColumn x:Name="commlettersentColumn" Binding="{Binding commlettersent}" Header="commlettersent" Width="SizeToHeader"/>
+             <DataGridCheckBoxColumn x:Name="calendersetColumn" Binding="{Binding calenderset}" Header="calenderset" Width="SizeToHeader"/> 
+                <DataGridCheckBoxColumn x:Name="calendersentColumn" Binding="{Binding calendersent}" Header="calendersent" Width="SizeToHeader"/>
+               <DataGridCheckBoxColumn x:Name="filepreparedColumn" Binding="{Binding fileprepared}" Header="fileprepared" Width="SizeToHeader"/>
+            
+                  <DataGridCheckBoxColumn x:Name="candidatesinformed2Column" Binding="{Binding candidatesinformed2}" Header="candidatesinformed 2" Width="SizeToHeader"/>
+                       <DataGridCheckBoxColumn x:Name="firstmeetingsummarysentColumn" Binding="{Binding firstmeetingsummarysent}" Header="firstmeetingsummarysent" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="foreignapplicantsColumn" Header="foreignapplicants" IsReadOnly="True" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding foreignapplicants}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+              
+             
+                <DataGridCheckBoxColumn x:Name="materialsentColumn" Binding="{Binding materialsent}" Header="materialsent" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="meetingdate1Column" Header="meetingdate 1" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding meetingdate1}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="meetingdate2Column" Header="meetingdate 2" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding meetingdate2}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridCheckBoxColumn x:Name="meetingdatesetColumn" Binding="{Binding meetingdateset}" Header="meetingdateset" Width="SizeToHeader"/>
+                <DataGridTextColumn x:Name="mercavaidColumn" Binding="{Binding mercavaid}" Header="mercavaid" Width="SizeToHeader"/>
+                <DataGridTemplateColumn x:Name="roomorderedColumn" Header="roomordered" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding roomordered}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="stage1candidatesColumn" Header="stage 1 candidates" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding stage1candidates}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="idColumn" Binding="{Binding id}" Header="id" Width="SizeToHeader"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
